@@ -152,6 +152,8 @@
       require('database.php');
       if (isset($_REQUEST['username']))
       {
+        $userID = 'user' . date('YmdHis');
+
         $username = stripslashes($_REQUEST['username']);
         $username = mysqli_real_escape_string($con,$username);
 
@@ -164,8 +166,8 @@
         $reg_date = date("Y-m-d");
         $role = "user";
 
-        $query = "INSERT into `users` (userName, userPassword, userEmail, userRegDate, userRole )
-                    VALUES ('$username', '".md5($password)."', '$email', '$reg_date', '$role')";
+        $query = "INSERT into `users` (userID, userName, userPassword, userEmail, userRegDate, userRole )
+                    VALUES ('$userID', '$username', '".md5($password)."', '$email', '$reg_date', '$role')";
         $result = mysqli_query($con,$query);
 
         if($result)
