@@ -810,7 +810,7 @@ if (isset($_POST['deleteButton'])) {
     <section class="new_realase rate" id="ratings">
         <div class="container">
             <div class="items">
-                <?php include 'view_draft.php'; ?>
+                <?php include 'view_rating.php'; ?>
             </div>
         </div>
     </section>

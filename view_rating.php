@@ -41,14 +41,16 @@ $reviewResult = mysqli_stmt_get_result($stmt);
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins'>
     <link rel="stylesheet" href="rating_style.css">
     <title>Rating</title>
 </head>
+
 <body class="rating_body">
-   
+
 
     <!-- Total rating review section -->
     <div class="rating_container">
@@ -85,7 +87,11 @@ $reviewResult = mysqli_stmt_get_result($stmt);
                         <img src="image/<?php echo htmlspecialchars($review['userProfilePic']); ?>" class="user-image">
                         <div>
                             <p class="user-name"><?php echo htmlspecialchars($review['userName']); ?></p>
-                            <p class="review-date"><?php echo htmlspecialchars($review['ratingDate']); ?></p>
+                            <span>
+                                <p class="review-date"><?php echo htmlspecialchars($review['ratingDate']); ?></p>
+                                <p class="review-time"><?php echo htmlspecialchars($review['ratingTime']); ?></p>
+                            </span>
+
                         </div>
                     </div>
                     <div class="review-content">
@@ -104,9 +110,10 @@ $reviewResult = mysqli_stmt_get_result($stmt);
         <?php endif; ?>
     </div>
     <script>
-        function addRating(){
+        function addRating() {
             window.location.href = "add_rating.php?movieID=<?php echo $movieID ?>";
         }
     </script>
 </body>
+
 </html>
