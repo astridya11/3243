@@ -10,20 +10,21 @@ if (!isset($_SESSION['userID'])) {
 
 // Retrieve userID from session
 $userID = $_SESSION['userID'];
+$movieID = $_REQUEST['movieID'];
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $movieID = $_POST['movieID'];
+    $ratingID = 'rating' . date('YmdHis');
     $ratingStar = $_POST['ratingStar'];
     $ratingDescription = $_POST['ratingDescription'];
 
-    $query = "INSERT INTO rating (movieID, userID, ratingStar, ratingDescription, ratingTime, ratingDate)
-              VALUES (?, ?, ?, ?, NOW(), CURDATE())";
-    $stmt = mysqli_prepare($con, $query);
-    mysqli_stmt_bind_param($stmt, 'iiis', $movieID, $userID, $ratingStar, $ratingDescription);
+    $query = "INSERT INTO rating (ratingID, ratingDate, ratingTime, ratingDescription, ratingStar, userID, movieID )
+              VALUES ('$ratingID', CURDATE(), NOW(), '$ratingDescription', '$ratingStar', '$userID', '$movieID')";
+    //$stmt = mysqli_prepare($con, $query);
+    // mysqli_stmt_bind_param($stmt, 'ssiis', $ratingStar, $ratingDescription);
 
-    if (mysqli_stmt_execute($stmt)) {
-        header("Location: movie.php?id=<?php echo $movieID;?>"); // Redirect to the movie page
+    if (mysqli_query($con, $query)) {
+        header("Location: movie_details.php?movieID=<?php echo $movieID;?>"); // Redirect to the movie page
         exit;
     } else {
         echo "Error: " . mysqli_error($con);

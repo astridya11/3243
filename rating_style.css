@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-body {
+.rating_body {
     margin: 0;
     font-family: 'Poppins';
     font-size: 15px;
@@ -51,7 +51,7 @@ body {
 }
 
 /* Total rating review section */
-.container {
+.rating_container {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;

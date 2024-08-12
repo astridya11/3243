@@ -7,6 +7,7 @@ $ratingStmt = mysqli_prepare($con, $ratingQuery);
 mysqli_stmt_bind_param($ratingStmt, 'i', $movieID);
 mysqli_stmt_execute($ratingStmt);
 $ratingResult = mysqli_stmt_get_result($ratingStmt);
+$movieID = isset($_GET['movieID']) ? trim($_GET['movieID']) : null;
 
 if ($ratingResult) {
     $totalRatings = 0;
@@ -46,19 +47,11 @@ $reviewResult = mysqli_stmt_get_result($stmt);
     <link rel="stylesheet" href="rating_style.css">
     <title>Rating</title>
 </head>
-<body>
-    <!-- Header section -->
-    <div class="header">
-        <div class="header-left">
-            <a href="movie.php"><img src="image/logo-transparent.png"></a>
-        </div>
-        <div class="header-right">
-            <a href="profile.php"><img src="image/profile-icon.png"></a>
-        </div>
-    </div>
+<body class="rating_body">
+   
 
     <!-- Total rating review section -->
-    <div class="container">
+    <div class="rating_container">
         <div class="rating-summary">
             <h2><img src="image/star.png"> <?php echo $averageRating; ?></h2>
             <p><?php echo $totalReviews; ?> reviews</p>
@@ -82,7 +75,7 @@ $reviewResult = mysqli_stmt_get_result($stmt);
     <div class="user-review-container">
         <div class="user-review-header">
             <h2>User's Reviews</h2>
-            <button type="button" class="add-review" onclick="window.location.href='add_rating.php'">Add Review</button>
+            <button type="button" class="add-review" onclick="window.location.href='add_rating.php?movieID=<?php echo $movieID; ?>'">Add Review</button>
         </div>
 
         <?php if ($reviewResult && mysqli_num_rows($reviewResult) > 0) : ?>
