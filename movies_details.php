@@ -7,6 +7,7 @@ $movieID = $_REQUEST['movieID'];
 $query = "SELECT * FROM movies where movieID='" . $movieID . "'";
 $result = mysqli_query($con, $query) or die(mysqli_error($con));
 $row = mysqli_fetch_assoc($result);
+$userRole = $_SESSION['userRole'];
 
 $genresArray = explode(", ", $row['genre']);
 
@@ -73,7 +74,7 @@ if (isset($_POST['wishlistButton'])) {
     if (mysqli_num_rows($check_result) > 0) {
         echo '<script>
         alert("Movie is already in your wishlist!");
-        window.location.href = "movies_details.php";
+        window.location.href = "movies_details.php?movieID=' . $movieID . '";
         </script>';
     } else {
 
@@ -83,10 +84,10 @@ if (isset($_POST['wishlistButton'])) {
         ('$wishlistID', '$movieID', '$userID')";
 
         if (mysqli_query($con, $ins_query)) {
-            echo '<script>
+            echo `<script>
             alert("Movie successfully added to your wishlist!");
-             window.location.href = "movies_details.php";
-            </script>';
+            window.location.href = "movies_details.php?movieID=' . $movieID . '";
+            </script>`;
         } else {
             die(mysqli_error($con));
         }
@@ -94,16 +95,17 @@ if (isset($_POST['wishlistButton'])) {
 }
 
 
+if (isset($_POST['updateButton'])) {
+    header("Location: update_movies.php?movieID=" . urlencode($movieID));
+}
 
-// rating section
 
-// feedback section
-
-// if user role is admin, show delete button
-// linked to delete_movies
-
-// if user role is admin, show update button
-// linked to update_movies
+if (isset($_POST['deleteButton'])) {
+    echo '<script>
+            confirm("Are you sure you want to delete this movie?");
+            window.location.href = "delete_movies.php?movieID=' . $movieID . '";
+            </script>';
+}
 
 
 ?>
@@ -115,7 +117,6 @@ if (isset($_POST['wishlistButton'])) {
     <meta charset="utf-8" />
     <title>STREAMLAb</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="moviestyle.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <!-- Owl Carousel css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" />
@@ -138,13 +139,14 @@ if (isset($_POST['wishlistButton'])) {
         body {
             background: #161616;
             font-family: "Poppins", sans-serif;
+            margin: -10px -4px 0;
         }
 
         /*---------global------*/
         .container {
             max-width: 95%;
             margin: auto;
-            margin-top: 5px;
+            margin-top: 10px;
         }
 
         a {
@@ -201,7 +203,7 @@ if (isset($_POST['wishlistButton'])) {
 
         header {
             height: 10vh;
-            background: rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #f2b704 0%, rgba(34, 31, 31, 0.4) 100%);
         }
 
         header .navbar {
@@ -220,7 +222,7 @@ if (isset($_POST['wishlistButton'])) {
         }
 
         header nav ul li a:hover {
-            color: #f2b704;
+            color: red;
         }
 
         header nav ul li {
@@ -270,7 +272,7 @@ if (isset($_POST['wishlistButton'])) {
             line-height: 40px;
             text-align: center;
             border-radius: 50%;
-            margin-right: 12px;
+            margin-right: 4px;
             color: white;
         }
 
@@ -282,7 +284,7 @@ if (isset($_POST['wishlistButton'])) {
             line-height: 40px;
             text-align: center;
             border-radius: 50%;
-            margin: 0px 12px;
+            margin: 4px 12px;
         }
 
         button {
@@ -324,7 +326,7 @@ if (isset($_POST['wishlistButton'])) {
             width: 100%;
             background: #f2b704;
             transition: 0.5s;
-            height: 10vh;
+            height: 8vh;
             box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
             transition: 0.5s;
         }
@@ -374,6 +376,10 @@ if (isset($_POST['wishlistButton'])) {
         .left,
         .right {
             width: 50%;
+        }
+
+        .details_left {
+            width: 65%;
         }
 
         .top {
@@ -435,7 +441,9 @@ if (isset($_POST['wishlistButton'])) {
             font-weight: bold;
         }
 
-        .watchedButton {
+        .watchedButton,
+        .updateButton,
+        .more_movies_btn {
             background: #f2b704;
             padding: 15px 25px;
             margin-right: 20px;
@@ -443,9 +451,25 @@ if (isset($_POST['wishlistButton'])) {
             font-weight: bold;
             border-radius: 8px;
             color: white;
+            cursor: pointer;
         }
 
-        .wishlistButton {
+        .watchedButton:hover,
+        .updateButton:hover {
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 #f2b704;
+        }
+
+        .wishlistButton:hover {
+            color: #f2b704;
+
+        }
+
+        .deleteButton:hover {
+            color: red
+        }
+
+        .wishlistButton,
+        .deleteButton {
             background: transparent;
             padding: 15px 25px;
             margin-right: 20px;
@@ -680,6 +704,7 @@ if (isset($_POST['wishlistButton'])) {
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -694,8 +719,7 @@ if (isset($_POST['wishlistButton'])) {
                                 <li><a href="#ratings">Ratings</a></li>
                                 <li><a href="#trailer">Trailer</a></li>
                                 <li><a href="#feedback">Feedback</a></li>
-                                <!-- link to min min de profile -->
-                                <li><a href="profile.html">Profile</a></li>
+                                <li><a href="movies_dashboard.php">More Movies</a></li>
                             </ul>
                         </nav>
                         <span class="fa fa-bars" onclick="menutoggle()"></span>
@@ -703,9 +727,10 @@ if (isset($_POST['wishlistButton'])) {
                         <div class="subscribe flex">
                             <form id="form" class="form">
                                 <input type="text" placeholder="Search" id="search" class="search" />
+                                
                             </form>
                             <i id="searchbtn" class="fas fa-search"></i>
-                            <i id="playbtn" class="fas fa-user"></i>
+                                <i id="playbtn" class="fas fa-user"></i>
                         </div>
                     </div>
                 </div>
@@ -713,7 +738,7 @@ if (isset($_POST['wishlistButton'])) {
 
             <div class="home_content">
                 <div class="container">
-                    <div class="left">
+                    <div class="details_left">
                         <h1><?php echo $row['title']; ?></h1>
 
                         <div class="time flex">
@@ -749,7 +774,14 @@ if (isset($_POST['wishlistButton'])) {
 
                         <form method="POST" class="button flex">
                             <input type="submit" name="watchedButton" class="watchedButton" value="WATCHED" />
-                            <input type="submit" name="wishlistButton" class="wishlistButton" value="WISHLIST" />
+                            <button type="submit" name="wishlistButton" class="wishlistButton">
+                                <i class="fa fa-plus"> </i> WISHLIST
+                            </button>
+                            <?php if ($userRole == 'admin') { ?>
+                                <input type="submit" name="updateButton" class="updateButton" value="UPDATE" />
+                                <button type="submit" name="deleteButton" class="deleteButton"><i class="fa fa-minus"></i> DELETE</button>
+                            <?php } ?>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -787,7 +819,7 @@ if (isset($_POST['wishlistButton'])) {
         <div class="container">
             <div class="heading flex1">
                 <h2>Trailers</h2>
-                <a href="movies_dashboard.php"><button>MORE MOVIES</button></a>
+                <a href="movies_dashboard.php"><button class="more_movies_btn">MORE MOVIES</button></a>
             </div>
 
             <div class="owl-carousel owl-theme">
@@ -901,6 +933,14 @@ if (isset($_POST['wishlistButton'])) {
             },
         });
     </script>
+    <i id="playbtn" class="fas fa-user"></i>
+
+<script>
+document.getElementById("playbtn").onclick = function() {
+    window.location.href = "profile.php";
+};
+</script>
+
 </body>
 
 </html>
