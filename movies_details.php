@@ -727,10 +727,10 @@ if (isset($_POST['deleteButton'])) {
                         <div class="subscribe flex">
                             <form id="form" class="form">
                                 <input type="text" placeholder="Search" id="search" class="search" />
-                                
+
                             </form>
                             <i id="searchbtn" class="fas fa-search"></i>
-                                <i id="playbtn" class="fas fa-user"></i>
+                            <i id="playbtn" class="fas fa-user"></i>
                         </div>
                     </div>
                 </div>
@@ -806,14 +806,8 @@ if (isset($_POST['deleteButton'])) {
             header.classList.toggle("sticky", window.scrollY > 50);
         });
     </script>
-
-    <section class="new_realase rate" id="ratings">
-        <div class="container">
-            <div class="items">
-                <?php include 'view_rating.php'; ?>
-            </div>
-        </div>
-    </section>
+    
+    <?php include 'view_rating.php'; ?>
 
     <section class="popular mtop" id="trailer">
         <div class="container">
@@ -935,11 +929,11 @@ if (isset($_POST['deleteButton'])) {
     </script>
     <i id="playbtn" class="fas fa-user"></i>
 
-<script>
-document.getElementById("playbtn").onclick = function() {
-    window.location.href = "profile.php";
-};
-</script>
+    <script>
+        document.getElementById("playbtn").onclick = function() {
+            window.location.href = "profile.php";
+        };
+    </script>
 
 </body>
 

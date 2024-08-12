@@ -84,7 +84,7 @@ $reviewResult = mysqli_stmt_get_result($stmt);
             <?php while ($review = mysqli_fetch_assoc($reviewResult)) : ?>
                 <div class="user-review">
                     <div class="user-info">
-                        <img src="image/<?php echo htmlspecialchars($review['userProfilePic']); ?>" class="user-image">
+                        <img src="image/default-pic.png<?php echo htmlspecialchars($review['userProfilePic']); ?>" class="user-image">
                         <div>
                             <p class="user-name"><?php echo htmlspecialchars($review['userName']); ?></p>
                             <span>
@@ -101,8 +101,8 @@ $reviewResult = mysqli_stmt_get_result($stmt);
                         <span class="stars"><?php echo str_repeat('★', $review['ratingStar']) . str_repeat('☆', 5 - $review['ratingStar']); ?></span>
                         <span class="rating-score">(<?php echo $review['ratingStar']; ?>)</span>
                         <span>
-                            <button class="edit-review" onclick="window.location.href='edit_review.php?id=<?php echo $review['ratingID']; ?>'">Edit Review</button>
-                            <button class="delete-review" onclick="window.location.href='delete_review.php?id=<?php echo $review['ratingID']; ?>'">Delete Review</button>
+                            <button class="edit-review" onclick=editRating()>Edit Review</button>
+                            <button class="delete-review" onclick=deleteRating()>Delete Review</button>
                         </span>
                     </div>
                 </div>
@@ -112,6 +112,12 @@ $reviewResult = mysqli_stmt_get_result($stmt);
     <script>
         function addRating() {
             window.location.href = "add_rating.php?movieID=<?php echo $movieID ?>";
+        }
+        function editRating(){
+            window.location.href = "edit_rating.php?movieID=<?php echo $movieID ?>";
+        }
+        function deleteRating(){
+            window.location.href = "delete_rating.php?movieID=<?php echo $movieID ?>";
         }
     </script>
 </body>

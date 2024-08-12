@@ -82,8 +82,8 @@
 }
 
 .rating-summary h2 {
-    width: auto;
-    height: auto;
+    width: 50px;
+    height: 50px ;
     font-weight: bold;
     color: black;
     font-size: 40px;
@@ -92,8 +92,8 @@
 }
 
 .container .rating-summary img {
-    height: 28px;
-    justify-items: center;
+    height: 5px;
+    justify-items: center;  
     justify-content: center;
 }
 
