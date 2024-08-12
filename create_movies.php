@@ -163,6 +163,7 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
             box-sizing: border-box;
             justify-content: center;
             background-color: #C5C6C7;
+            cursor: pointer;
         }
 
         label {
