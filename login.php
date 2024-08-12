@@ -17,7 +17,7 @@
     $result = mysqli_query($con,$query) or die(mysqli_error($con));
     // return the number of rows in result set
     $rows = mysqli_num_rows($result);
-    $userData = $row = mysqli_fetch_assoc($result);
+    $userData = mysqli_fetch_assoc($result);
         
     // profile exists
     if($rows == 1)
@@ -289,7 +289,7 @@
     <body>
       <div class="header">
         <div class="header-left">
-          <a href="movie.php"><img src="image/logo-transparent.png"></a>
+          <a href="movies_dashboard.php"><img src="image/logo-transparent.png"></a>
         </div>
         <div class="header-right">
           <a href="profile.php"><img src="image/profile-icon.png"></a>
@@ -321,10 +321,10 @@
       <div id="popupOverlay" class="overlay-container">
         <section class="forgot-form" id="forgot-form">
           <h2 style="color:#597445;">Forgot Password</h2>
-          <form id="forgotpasswordForm" class="forgotpasswordForm" action="" mehod="post">
+          <form id="forgotpasswordForm" class="forgotpasswordForm" action="forgotpassword.php" method="POST">
           <label class="form-label" for="forgotEmail"> Email: </label> 
           <input class="form-input" type="email" id="forgotEmail" name="forgotEmail" placeholder="Email" required><br>
-          <button class="btn-submit" type="submit">Submit</button>
+          <button class="btn-submit" type="submit">Reset Password</button>
           </form>
           <button class="btn-close-popup" onclick="togglePopup()"> Close </button> 
         </section>
