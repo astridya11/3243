@@ -6,6 +6,7 @@ include 'database.php';
 $feedbackID = isset($_GET['feedbackID']) ? mysqli_real_escape_string($con, $_GET['feedbackID']) : '';
 $userID = $_SESSION['userID'];
 
+
 if (empty($feedbackID)) {
     die('Invalid feedback ID.');
 }
@@ -23,7 +24,7 @@ function executeQuery($con, $query, $params) {
 
 // Fetch feedback details
 $query = "
-    SELECT f.feedbackTitle, f.feedbackContent, f.feedbackDateTime, f.feedbackLike, f.feedbackDislike, f.userID,
+    SELECT f.feedbackTitle, f.feedbackContent, f.feedbackDateTime, f.feedbackLike, f.feedbackDislike, f.userID, f.movieID,
            u.userName, u.userProfilePic 
     FROM Feedback f 
     JOIN users u ON f.userID = u.userID 
@@ -36,6 +37,7 @@ if ($result->num_rows === 0) {
 }
 
 $feedback = $result->fetch_assoc();
+$movieID = $feedback['movieID'];
 
 // Fetch replies
 $query_replies = "
@@ -49,6 +51,7 @@ $query_replies = "
 $result_replies = executeQuery($con, $query_replies, ["s", $feedbackID]);
 
 $all_replies = $result_replies->fetch_all(MYSQLI_ASSOC);
+
 // Function to display replies recursively
 function displayReplies($parentID, $replies, $feedbackID) {
     foreach ($replies as $reply) {
@@ -115,12 +118,11 @@ function displayReplies($parentID, $replies, $feedbackID) {
     <title><?php echo htmlspecialchars($feedback['feedbackTitle']); ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="feedback_detail.css">
-    
 </head>
 <body>
-    <script src = "feedback_detail.js"></script>
+    <script src="feedback_detail.js"></script>
     <div class="feedback-detail">
-        <a href="feedback.php" class="back-btn">Back</a>
+    <a href="movies_details.php?movieID=<?php echo urlencode($movieID); ?>" class="back-btn">Back</a>
         <h1><?php echo htmlspecialchars($feedback['feedbackTitle']); ?></h1>
         <div class="feedback-item">
             <div class="user-info">

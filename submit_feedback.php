@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
-        // Redirect to feedback page with success
-        header("Location: feedback.php");
+        // Redirect to feedback page with movieID
+        header("Location: movies_details.php?movieID=" . urlencode($movieID) . "#feedback");
         exit();
     } else {
         // Handle execution errors

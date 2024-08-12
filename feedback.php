@@ -2,6 +2,7 @@
 require 'auth.php'; // Ensure this script includes authentication logic
 include 'database.php'; // Include the database connection
 
+
 // Check if userID is set in the session
 if (!isset($_SESSION['userID'])) {
     // Redirect to login page or show an error
@@ -12,34 +13,32 @@ if (!isset($_SESSION['userID'])) {
 // Get user ID from session
 $userID = $_SESSION['userID'];
 
-// Get the movieID from query parameters
-$movieID = isset($_GET['movieID']) ? $_GET['movieID'] : null;
+// Get the movieID from query parameters and validate it
+$movieID = isset($_GET['movieID']) ? trim($_GET['movieID']) : null;
 
-// Ensure movieID is valid
-if ($movieID) {
-    // Determine sort order based on query parameter
-    $sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
-    $orderBy = ($sort === 'hottest') ? 'f.feedbackLike DESC' : 'f.feedbackDateTime DESC';
+// Determine sort order based on query parameter
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
+$orderBy = ($sort === 'hottest') ? 'f.feedbackLike DESC' : 'f.feedbackDateTime DESC';
 
-    // Prepare and execute query
-    $query = "SELECT f.feedbackID, f.feedbackTitle, f.feedbackContent, f.feedbackDateTime, f.feedbackLike, f.feedbackDislike, u.userName, u.userProfilePic, f.userID, f.movieID
-              FROM Feedback f 
-              JOIN Users u ON f.userID = u.userID 
-              WHERE f.movieID = ?
-              ORDER BY $orderBy";
+// Prepare and execute query
+$query = "SELECT f.feedbackID, f.feedbackTitle, f.feedbackContent, f.feedbackDateTime, f.feedbackLike, f.feedbackDislike, u.userName, u.userProfilePic, f.userID, f.movieID
+        FROM Feedback f 
+        JOIN Users u ON f.userID = u.userID 
+        WHERE f.movieID = ?
+        ORDER BY $orderBy";
 
-    if ($stmt = mysqli_prepare($con, $query)) {
-        mysqli_stmt_bind_param($stmt, 's', $movieID);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-    } else {
-        die('Database query preparation failed: ' . mysqli_error($con));
+if ($stmt = mysqli_prepare($con, $query)) {
+    mysqli_stmt_bind_param($stmt, 'i', $movieID); // Bind movieID as an integer
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($result) == 0) {
+        echo "<p>No feedback found for this movie.</p>";
     }
 } else {
-    die('Invalid movie ID.');
+    die('Database query preparation failed: ' . mysqli_error($con));
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -247,38 +246,55 @@ if ($movieID) {
         <h1>Feedback and Discussion</h1>
         <div class="feedback-header">
             <div class="button-group">
-                <a href="feedback.php?movieID=<?php echo urlencode($movieID); ?>&sort=latest"><button><i class="fas fa-clock"></i> Latest</button></a>
-                <a href="feedback.php?movieID=<?php echo urlencode($movieID); ?>&sort=hottest"><button><i class="fas fa-fire"></i> Hottest</button></a>
+                <a href="movies_details.php?movieID=<?php echo urlencode($movieID); ?>&sort=latest"><button><i class="fas fa-clock"></i> Latest</button></a>
+                <a href="movies_details.php?movieID=<?php echo urlencode($movieID); ?>&sort=hottest"><button><i class="fas fa-fire"></i> Hottest</button></a>
             </div>
             <button id="openFormBtn"><i class="fas fa-plus"></i> I want to feedback</button>
         </div>
-        <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <div class="feedback-item">
-                <div class="feedback-content-header">
-                    <div class="user-info">
-                        <?php if ($row['userProfilePic']): ?>
-                            <img src="<?php echo htmlspecialchars($row['userProfilePic']); ?>" alt="<?php echo htmlspecialchars($row['userName']); ?>'s Profile Picture">
-                        <?php else: ?>
-                            <img src="default-profile-pic.jpg" alt="Default Profile Picture">
-                        <?php endif; ?>
-                        <div>
-                            <div><?php echo htmlspecialchars($row['userName']); ?></div>
-                            <div><?php echo htmlspecialchars($row['feedbackDateTime']); ?></div>
+        <?php if (mysqli_num_rows($result) > 0): ?>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                <div class="feedback-item">
+                    <div class="feedback-content-header">
+                        <div class="user-info">
+                            <?php if ($row['userProfilePic']): ?>
+                                <img src="<?php echo htmlspecialchars($row['userProfilePic']); ?>" alt="<?php echo htmlspecialchars($row['userName']); ?>'s Profile Picture">
+                            <?php else: ?>
+                                <img src="default-profile-pic.jpg" alt="Default Profile Picture">
+                            <?php endif; ?>
+                            <div>
+                                <div><?php echo htmlspecialchars($row['userName']); ?></div>
+                                <div><?php echo htmlspecialchars($row['feedbackDateTime']); ?></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="feedback-title"><?php echo htmlspecialchars($row['feedbackTitle']); ?></div>
+                    <div class="feedback-content"><?php echo nl2br(htmlspecialchars($row['feedbackContent'])); ?></div>
+                    <div class="feedback-actions">
+                        <button class="like-btn" 
+                            data-feedback-id="<?php echo $row['feedbackID']; ?>" 
+                            data-movie-id="<?php echo $row['movieID']; ?>"
+                            data-feedback-like="<?php echo $row['feedbackLike']; ?>">
+                            <i class="fas fa-thumbs-up"></i> 
+                            <span><?php echo $row['feedbackLike']; ?></span> Like
+                        </button>
+
+                        <button class="dislike-btn" 
+                            data-feedback-id="<?php echo $row['feedbackID']; ?>" 
+                            data-movie-id="<?php echo $row['movieID']; ?>"
+                            data-feedback-dislike="<?php echo $row['feedbackDislike']; ?>">
+                            <i class="fas fa-thumbs-down"></i> 
+                            <span><?php echo $row['feedbackDislike']; ?></span> Dislike
+                        </button>
+                        <button class="read-more-btn" onclick="window.location.href='feedback_detail.php?feedbackID=<?php echo $row['feedbackID']; ?>'"><i class="fas fa-eye"></i> Read more</button>
+                        <?php if ($row['userID'] == $userID): ?>
+                            <button class="delete-btn" data-feedback-id="<?php echo $row['feedbackID']; ?>"><i class="fas fa-trash-alt"></i> Delete</button>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="feedback-title"><?php echo htmlspecialchars($row['feedbackTitle']); ?></div>
-                <div class="feedback-content"><?php echo nl2br(htmlspecialchars($row['feedbackContent'])); ?></div>
-                <div class="feedback-actions">
-                    <button class="like-btn" data-feedback-id="<?php echo $row['feedbackID']; ?>" data-feedback-like="<?php echo $row['feedbackLike']; ?>"><i class="fas fa-thumbs-up"></i> <span><?php echo $row['feedbackLike']; ?></span></button>
-                    <button class="dislike-btn" data-feedback-id="<?php echo $row['feedbackID']; ?>" data-feedback-dislike="<?php echo $row['feedbackDislike']; ?>"><i class="fas fa-thumbs-down"></i> <span><?php echo $row['feedbackDislike']; ?></span></button>
-                    <button class="read-more-btn" onclick="window.location.href='feedback_detail.php?feedbackID=<?php echo $row['feedbackID']; ?>'"><i class="fas fa-eye"></i> Read more</button>
-                    <?php if ($row['userID'] == $userID): ?>
-                        <button class="delete-btn" data-feedback-id="<?php echo $row['feedbackID']; ?>"><i class="fas fa-trash-alt"></i> Delete</button>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endwhile; ?>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p>No feedback found for this movie.</p>
+        <?php endif; ?>
     </div>
 
     <!-- Feedback Form Popup -->
@@ -313,97 +329,104 @@ if ($movieID) {
     </div>
 
     <script>
-        // Handle feedback form popup
-        var formPopup = document.getElementById('feedbackFormPopup');
-        var openFormBtn = document.getElementById('openFormBtn');
-        var closeForm = document.getElementById('closeForm');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements for popups and buttons
+        const confirmationPopup = document.getElementById("confirmationPopup");
+        const feedbackFormPopup = document.getElementById("feedbackFormPopup");
+        const openFormBtn = document.getElementById('openFormBtn');
+        const closeForm = document.getElementById('closeForm');
+        const confirmDeleteBtn = document.getElementById("confirmDelete");
+        const cancelDeleteBtn = document.getElementById("cancelDelete");
+        let deleteFeedbackID = null;
 
-        openFormBtn.onclick = function() {
-            formPopup.style.display = 'block';
-        }
+        // Event listener for opening the feedback form popup
+        openFormBtn.addEventListener('click', () => {
+            feedbackFormPopup.style.display = 'block';
+        });
 
-        closeForm.onclick = function() {
-            formPopup.style.display = 'none';
-        }
+        // Event listener for closing the feedback form popup
+        closeForm.addEventListener('click', () => {
+            feedbackFormPopup.style.display = 'none';
+        });
 
-        window.onclick = function(event) {
-            if (event.target == formPopup) {
-                formPopup.style.display = 'none';
+        // Event listener for closing popups when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === feedbackFormPopup) {
+                feedbackFormPopup.style.display = 'none';
             }
-        }
+            if (event.target === confirmationPopup) {
+                confirmationPopup.style.display = 'none';
+            }
+        });
 
-        // Handle like/dislike buttons
-        document.querySelectorAll('.like-btn, .dislike-btn').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var feedbackID = button.getAttribute('data-feedback-id');
-                var action = button.classList.contains('like-btn') ? 'like' : 'dislike';
-                var countSpan = button.querySelector('span');
+        // Show confirmation popup for deletion
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                deleteFeedbackID = button.getAttribute('data-feedback-id');
+                confirmationPopup.style.display = 'block';
+            });
+        });
 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'update_reaction.php', true);
+        // Confirm deletion of feedback
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (deleteFeedbackID) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'delete_feedback.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
                 xhr.onload = function() {
                     if (xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.success) {
-                            countSpan.textContent = response.newCount;
-                            button.setAttribute('data-feedback-' + action, response.newCount);
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
+                        location.reload();
                     } else {
-                        alert('An error occurred. Please try again.');
+                        alert('Error deleting feedback.');
                     }
                 };
-
-                xhr.send('feedbackID=' + encodeURIComponent(feedbackID) + 
-                         '&userID=' + encodeURIComponent('<?php echo $userID; ?>') + 
-                         '&action=' + encodeURIComponent(action));
-            });
+                xhr.send(`feedbackID=${deleteFeedbackID}`);
+            }
+            confirmationPopup.style.display = 'none';
         });
 
-        // Handle delete button
-        document.querySelectorAll('.delete-btn').forEach(function(button) {
+        // Cancel deletion
+        cancelDeleteBtn.addEventListener('click', () => {
+            confirmationPopup.style.display = 'none';
+        });
+
+        document.querySelectorAll('.like-btn, .dislike-btn').forEach(button => {
             button.addEventListener('click', function() {
-                var feedbackID = button.getAttribute('data-feedback-id');
+                const feedbackID = this.getAttribute('data-feedback-id');
+                const movieID = this.getAttribute('data-movie-id');
+                const action = this.classList.contains('like-btn') ? 'like' : 'dislike';
+                const currentCount = parseInt(this.getAttribute(`data-feedback-${action}`));
 
-                // Show confirmation popup
-                document.getElementById('confirmationPopup').style.display = 'flex';
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_feedback.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.status === 'success') {
+                                const countElement = button.querySelector('span');
+                                countElement.textContent = action === 'like' ? response.feedbackLike : response.feedbackDislike;
 
-                // Handle confirmation
-                document.getElementById('confirmDelete').onclick = function() {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'delete_feedback.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            var response = JSON.parse(xhr.responseText);
-                            if (response.success) {
-                                // Remove the feedback item from the DOM
-                                button.closest('.feedback-item').remove();
+                                // Optionally update button state
+                                // button.disabled = true; // Disable button if needed
                             } else {
-                                alert('Error: ' + response.message);
+                                alert(response.message || 'Error processing your request.');
                             }
-                        } else {
-                            alert('An error occurred. Please try again.');
+                        } catch (e) {
+                            alert('Error parsing response.');
                         }
-                    };
-
-                    xhr.send('feedbackID=' + encodeURIComponent(feedbackID) + 
-                             '&userID=' + encodeURIComponent('<?php echo $userID; ?>'));
-
-                    // Close the confirmation popup
-                    document.getElementById('confirmationPopup').style.display = 'none';
+                    } else {
+                        alert('Error processing your request.');
+                    }
                 };
-
-                // Handle cancellation
-                document.getElementById('cancelDelete').onclick = function() {
-                    document.getElementById('confirmationPopup').style.display = 'none';
+                xhr.onerror = function() {
+                    alert('Request failed.');
                 };
+                xhr.send(`feedbackID=${encodeURIComponent(feedbackID)}&movieID=${encodeURIComponent(movieID)}&action=${encodeURIComponent(action)}`);
             });
         });
+    });
     </script>
 </body>
 </html>
