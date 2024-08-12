@@ -1,5 +1,4 @@
 <?php
-require 'auth.php'; // Ensure this script includes authentication logic
 include 'database.php'; // Include the database connection
 
 
