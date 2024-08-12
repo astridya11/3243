@@ -17,15 +17,25 @@
     $result = mysqli_query($con,$query) or die(mysqli_error($con));
     // return the number of rows in result set
     $rows = mysqli_num_rows($result);
+    $userData = $row = mysqli_fetch_assoc($result);
         
     // profile exists
     if($rows == 1)
     {
       $_SESSION['username'] = $username;
+      $_SESSION['userID'] = $userData["userID"];
+      $_SESSION['userRole'] = $userData["userRole"];
 
       // header function must come with exit() or die()
       // die() is used to throw exception
-      header("Location: profile.php");
+      if($_SESSION['userRole'] == "admin"){
+        header("Location: create_movies.php");
+      }else if($_SESSION['userRole'] == 'user'){
+        header("Location: movies_dashboard.php");
+      }else{
+        echo("Invalid user");
+      }
+      
       exit();
     }
     else
