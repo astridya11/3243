@@ -10,7 +10,12 @@ if (!isset($_SESSION['userID'])) {
 
 // Retrieve userID from session
 $userID = $_SESSION['userID'];
-$movieID = $_REQUEST['movieID'];
+if (isset($_REQUEST['movieID'])) {
+    $movieID = $_REQUEST['movieID']; // Retrieve movieID from request
+} else {
+    echo "Error: movieID not provided!";
+    exit;
+}
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // mysqli_stmt_bind_param($stmt, 'ssiis', $ratingStar, $ratingDescription);
 
     if (mysqli_query($con, $query)) {
-        header("Location: movie_details.php?movieID=<?php echo $movieID;?>"); // Redirect to the movie page
+        header("Location: movies_details.php?movieID=" . urlencode($movieID)); // Redirect to the movie page
         exit;
     } else {
         echo "Error: " . mysqli_error($con);
@@ -106,8 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="rating-box">
         <h2>Add Your Rating</h2>
         <form method="POST" action="add_rating.php">
-            <input type="hidden" name="movieID" value="<?php echo $_GET['id']; ?>">
-
+        <input type="hidden" name="movieID" value="<?php echo htmlspecialchars($movieID); ?>">
             <label for="ratingStar">Star Rating:</label>
             <select name="ratingStar" id="ratingStar" required>
                 <option value="" disabled selected>Select your rating</option>

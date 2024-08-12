@@ -75,7 +75,7 @@ $reviewResult = mysqli_stmt_get_result($stmt);
     <div class="user-review-container">
         <div class="user-review-header">
             <h2>User's Reviews</h2>
-            <button type="button" class="add-review" onclick="window.location.href='add_rating.php?movieID=<?php echo $movieID; ?>'">Add Review</button>
+            <button type="button" class="add-review" onclick=addRating()>Add Review</button>
         </div>
 
         <?php if ($reviewResult && mysqli_num_rows($reviewResult) > 0) : ?>
@@ -103,5 +103,10 @@ $reviewResult = mysqli_stmt_get_result($stmt);
             <?php endwhile; ?>
         <?php endif; ?>
     </div>
+    <script>
+        function addRating(){
+            window.location.href = "add_rating.php?movieID=<?php echo $movieID ?>";
+        }
+    </script>
 </body>
 </html>
