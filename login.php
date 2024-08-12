@@ -19,15 +19,15 @@
     $rows = mysqli_num_rows($result);
         
     // profile exists
-    if($rows == 1)
-    {
-      $_SESSION['username'] = $username;
+    if ($rows == 1)
+{
+    $user = mysqli_fetch_assoc($result);
+    $_SESSION['username'] = $username;
+    $_SESSION['userID'] = $user['userID']; // Store the userID in the session
 
-      // header function must come with exit() or die()
-      // die() is used to throw exception
-      header("Location: profile.php");
-      exit();
-    }
+    header("Location: profile.php");
+    exit();
+}
     else
     {
       echo '<script>
