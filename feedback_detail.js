@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    document.querySelectorAll('.like-reply-btn, .dislike-reply-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            handleReaction(this, 'reply');
+        });
+    });
+
     // Handle Edit Reply button clicks
     document.querySelectorAll('.edit-reply-btn').forEach(function(button) {
         button.addEventListener('click', function() {
@@ -39,6 +45,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function toggleReplyForm(replyID) {
+    const form = document.getElementById(`reply-form-${replyID}`);
+    if (form) {
+        // Toggle the display property between 'none' and 'block'
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    } else {
+        console.error(`Reply form with ID reply-form-${replyID} not found.`);
+    }
+}
+
 
 function handleReaction(button, itemType) {
     const itemID = button.getAttribute('data-item-id');
@@ -96,6 +113,12 @@ function showEditFeedbackForm(feedbackID, feedbackTitle, feedbackContent) {
     document.getElementById('edit-feedback-content').value = feedbackContent;
     document.getElementById('edit-feedback-modal').style.display = 'block';
 
+}
+
+function confirmDelete(replyID) {
+    if (confirm('Are you sure you want to delete this reply?')) {
+        window.location.href = `delete_reply.php?replyID=${encodeURIComponent(replyID)}`;
+    }
 }
 
 function confirmDeleteFeedback(feedbackID) {
