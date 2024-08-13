@@ -61,7 +61,7 @@ function getColor($vote)
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <title>Movie App</title>
+    <title>Dashboard</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap");
 
@@ -214,6 +214,7 @@ function getColor($vote)
             text-align: center;
             border-radius: 50%;
             margin: 0px 12px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -249,6 +250,12 @@ function getColor($vote)
 
         <?php endforeach; ?>
     </main>
+
+    <script>
+        document.getElementById("playbtn").onclick = function() {
+            window.location.href = "profile.php";
+        };
+    </script>
 
 </body>
 

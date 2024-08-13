@@ -122,17 +122,61 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
 <head>
     <meta charset="utf-8">
     <title>Insert New Movie</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="callAPI.js"></script>
     <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+         
+        body {
+            background: linear-gradient(to right, rgba(34, 31, 31, 1) 0%, rgba(34, 31, 31, 0.4) 100%);
+            margin: -10px -4px 0;
+        }
+
+        .container {
+            max-width: 95%;
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex1 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        i {
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
         .form-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            margin: 0px 12px;
+            margin: 12px 12px 0px;
             padding: 12px 0px;
             background-color: rgb(240, 240, 240);
         }
+
 
         .form-container div {
             width: 45%;
@@ -156,13 +200,15 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
             box-sizing: border-box;
         }
 
-        input[type="submit"],
-        .api-button {
-            width: 30%;
-            padding: 6px;
+        input[type="submit"] {
             box-sizing: border-box;
             justify-content: center;
-            background-color: #C5C6C7;
+            background-color: #f2b704;
+            padding: 15px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            color: white;
             cursor: pointer;
         }
 
@@ -192,15 +238,160 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
                 width: 100%;
             }
         }
+
+        header {
+            height: 10vh;
+            background: linear-gradient(to right, #f2b704 0%, rgba(34, 31, 31, 0.4) 100%);
+        }
+
+        header .navbar {
+            align-items: center;
+            transition: 0.5s;
+        }
+
+        header nav ul {
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        header nav ul li a {
+            color: white;
+            transition: all 300ms ease-in-out;
+        }
+
+        header nav ul li a:hover {
+            color: #161616;
+        }
+
+        header nav ul li {
+            margin-right: 20px;
+            display: inline-block;
+        }
+
+        header .navbar span {
+            text-align: center;
+            margin-left: 20px;
+            color: black;
+            font-size: 25px;
+            display: none;
+        }
+
+        .subscribe i {
+            font-size: 20px;
+            margin-right: 20px;
+        }
+
+        #playbtn {
+            background: #f2b704;
+            color: white;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            margin: 4px 12px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 20%;
+            background: #f2b70485;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 0px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .subscribe_flex {
+            /*adjust the toolbar search and user button*/
+            width: 100%;
+            justify-content: flex-end;
+            /* Align items to the right */
+            margin-left: 1080px;
+        }
+
+        .subscribe_flex i {
+            margin-left: 18px;
+            /* Optional: space between icons */
+        }
+
+        header.sticky {
+            z-index: 10;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #f2b704;
+            transition: 0.5s;
+            height: 8vh;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+            transition: 0.5s;
+        }
+
+        header.sticky .subscribe {
+            display: none;
+        }
+
+
+        @media only screen and (max-width: 768px) {
+            header nav ul {
+                position: absolute;
+                top: 100px;
+                left: 0;
+                width: 100%;
+                background: #f2b704;
+                overflow: hidden;
+                transition: max-height 0.5s;
+                z-index: 100;
+            }
+
+            header nav ul li {
+                display: block;
+                margin: 50px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            header .navbar span {
+                color: white;
+                display: block;
+                cursor: pointer;
+            }
+
+            .home {
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+                height: 70vh;
+            }
+
+            .subscribe {
+                display: none;
+            }
+
+        }
     </style>
 </head>
 
-<body style="background:#82AAFF;">
-    <p>
-        <a href="movies_dashboard.php">Movies Dashboard</a>
-        <a href="view_movies.php">View Movie Record</a>
-        <a href="logout.php">Logout</a>
-    </p>
+<body>
+<header>
+        <div class="container">
+            <div class="navbar flex1">
+                <nav>
+                    <ul id="menuitem">
+                        <li><a href="movies_dashboard.php">Movies Dashboard </a></li>
+                    </ul>
+                </nav>
+                <span class="fa fa-bars" onclick="menutoggle()"></span>
+
+                <div class="subscribe flex">
+                    <i id="playbtn" class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
     <h1 style="color:white; margin-left: 12px;">Insert New Movies</h1>
     <form name="insert_movie" style="margin-bottom: 0px;" method="post" action="">
         <input type="hidden" name="new" value="1" />
@@ -292,6 +483,11 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
         </div>
     </form>
     <p class="status"><?php echo $status; ?></p>
+    <script>
+        document.getElementById("playbtn").onclick = function() {
+            window.location.href = "profile.php";
+        };
+    </script>
 </body>
 
 </html>
