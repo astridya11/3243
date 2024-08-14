@@ -122,7 +122,7 @@ if ($userID) {
                 <img src="image/star.png">
                 <h2><?php echo number_format($averageRating, 1); ?></h2>
             </div>
-            <p><?php echo $totalReviews; ?> reviews</p>
+            <p><?php echo $totalReviews; ?> rated </p>
         </div>
 
         <!-- Statistic bar -->
@@ -142,8 +142,8 @@ if ($userID) {
     <!-- User review section -->
     <div class="user-review-container">
         <div class="user-review-header">
-            <h2>User's Reviews</h2>
-            <button type="button" class="add-review" onclick="addRating()">Add Review</button>
+            <h2>Users' Ratings</h2>
+            <button type="button" class="add-review" onclick="addRating()">Add Rating</button>
         </div>
 
         <div class="reviews-scrollable">
@@ -174,8 +174,8 @@ if ($userID) {
                             <br>
                             <?php if ($review['reviewUserID'] == $userID) : ?>
                                 <span>
-                                    <button class="edit-review" onclick="editRating('<?php echo $review['ratingID']; ?>')">Edit Review</button>
-                                    <button class="delete-review" onclick="deleteRating('<?php echo $review['ratingID']; ?>')">Delete Review</button>
+                                    <button class="edit-review" onclick="editRating('<?php echo $review['ratingID']; ?>')">Edit Rating</button>
+                                    <button class="delete-review" onclick="deleteRating('<?php echo $review['ratingID']; ?>')">Delete Rating</button>
                                 </span>
                             <?php endif; ?>
                         </div>
@@ -187,7 +187,7 @@ if ($userID) {
     <script>
         function addRating() {
             <?php if ($ratingCount > 0) : ?>
-                alert('You have already rated this movie.\n If you wish to rate this movie again, kindly edit your review.');
+                alert('You have already rated this movie.\n If you wish to rate this movie again, kindly edit your rating.');
             <?php else : ?>
                 window.location.href = "add_rating.php?movieID=<?php echo $movieID ?>";
             <?php endif; ?>
@@ -203,7 +203,7 @@ if ($userID) {
 
         function deleteRating(ratingID) {
             <?php if ($ratingCount > 0) : ?>
-                if (confirm('Are you sure you want to delete this review?')) {
+                if (confirm('Are you sure you want to delete this rating?')) {
                     window.location.href = "delete_rating.php?movieID=<?php echo $movieID ?>&ratingID=" + ratingID;
                 }
             <?php else : ?>
