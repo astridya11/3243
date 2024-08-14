@@ -1,23 +1,32 @@
 <?php
-// Check if a session is already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 require('database.php');
 
-// Fetch the movieID from GET parameter
-$movieID = isset($_GET['movieID']) ? trim($_GET['movieID']) : null;
+// Fetch the movieID
+$movieID = isset($_REQUEST['movieID']) ? trim($_REQUEST['movieID']) : null;
 
 if (!$movieID) {
-    echo "Error: movieID not provided!";
+    echo "Error: Movie not found! (movieID not provided)";
     exit;
+}
+
+
+// Check if user has already rated the movie
+$userID = $_SESSION['userID'] ?? null;
+$ratingCount = 0;
+
+if ($userID) {
+    $checkRatingQuery = "SELECT COUNT(*) as count FROM rating WHERE movieID = ? AND userID = ?";
+    $checkRatingStmt = mysqli_prepare($con, $checkRatingQuery);
+    mysqli_stmt_bind_param($checkRatingStmt, 'ss', $movieID, $userID);
+    mysqli_stmt_execute($checkRatingStmt);
+    $checkRatingResult = mysqli_stmt_get_result($checkRatingStmt);
+    $ratingCount = mysqli_fetch_assoc($checkRatingResult)['count'];
 }
 
 // Fetch ratings and reviews from database
 $ratingQuery = "SELECT ratingStar FROM rating WHERE movieID = ?";
 $ratingStmt = mysqli_prepare($con, $ratingQuery);
-mysqli_stmt_bind_param($ratingStmt, 'i', $movieID);
+mysqli_stmt_bind_param($ratingStmt, 's', $movieID);
 mysqli_stmt_execute($ratingStmt);
 $ratingResult = mysqli_stmt_get_result($ratingStmt);
 
@@ -27,10 +36,9 @@ $reviewQuery = "SELECT r.ratingID, r.ratingTime, r.ratingDate, r.ratingDescripti
                 JOIN users u ON r.userID = u.userID
                 WHERE r.movieID = ?";
 $stmt = mysqli_prepare($con, $reviewQuery);
-mysqli_stmt_bind_param($stmt, 'i', $movieID);
+mysqli_stmt_bind_param($stmt, 's', $movieID);
 mysqli_stmt_execute($stmt);
 $reviewResult = mysqli_stmt_get_result($stmt);
-
 
 if ($ratingResult) {
     $totalRatings = 0;
@@ -50,16 +58,6 @@ if ($ratingResult) {
     echo "Error: " . mysqli_error($con);
     exit;
 }
-
-// Fetch rating with lastModified field and user details
-$reviewQuery = "SELECT r.ratingID, r.ratingTime, r.ratingDate, r.ratingDescription, r.ratingStar, r.lastModified, r.userID as reviewUserID, u.userName, u.userProfilePic
-                FROM rating r
-                JOIN users u ON r.userID = u.userID
-                WHERE r.movieID = ?";
-$stmt = mysqli_prepare($con, $reviewQuery);
-mysqli_stmt_bind_param($stmt, 'i', $movieID);
-mysqli_stmt_execute($stmt);
-$reviewResult = mysqli_stmt_get_result($stmt);
 
 // Function to calculate time ago
 function timeAgo($datetime)
@@ -90,31 +88,20 @@ function timeAgo($datetime)
         return "$years year" . ($years > 1 ? 's' : '') . " ago";
     }
 }
-
-// Check if user has already rated the movie
-$userID = $_SESSION['userID'] ?? null;
-$ratingCount = 0;
-
-if ($userID) {
-    $checkRatingQuery = "SELECT COUNT(*) as count FROM rating WHERE movieID = ? AND userID = ?";
-    $checkRatingStmt = mysqli_prepare($con, $checkRatingQuery);
-    mysqli_stmt_bind_param($checkRatingStmt, 'ii', $movieID, $userID);
-    mysqli_stmt_execute($checkRatingStmt);
-    $checkRatingResult = mysqli_stmt_get_result($checkRatingStmt);
-    $ratingCount = mysqli_fetch_assoc($checkRatingResult)['count'];
-}
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins'>
     <link rel="stylesheet" href="rating_style.css">
     <title>Rating</title>
 </head>
-<body>
 
+<body>
+    
     <!-- Total rating review section -->
     <div class="rating_container">
         <div class="rating-summary">
@@ -143,7 +130,9 @@ if ($userID) {
     <div class="user-review-container">
         <div class="user-review-header">
             <h2>Users' Ratings</h2>
-            <button type="button" class="add-review" onclick="addRating()">Add Rating</button>
+            <?php if ($ratingCount == 0) : ?>
+                <button type="button" class="add-review" onclick="addRating()">Add Rating</button>
+            <?php endif; ?>
         </div>
 
         <div class="reviews-scrollable">
@@ -181,6 +170,8 @@ if ($userID) {
                         </div>
                     </div>
                 <?php endwhile; ?>
+            <?php else : ?>
+                <p>No rating yet.</p>
             <?php endif; ?>
         </div>
     </div>
@@ -212,4 +203,5 @@ if ($userID) {
         }
     </script>
 </body>
+
 </html>

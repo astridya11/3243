@@ -18,18 +18,18 @@ if (isset($_REQUEST['movieID'])) {
     exit;
 }
 
-// Check if user has already rated the movie
-$checkRatingQuery = "SELECT COUNT(*) as count FROM rating WHERE movieID = ? AND userID = ?";
-$checkRatingStmt = mysqli_prepare($con, $checkRatingQuery);
-mysqli_stmt_bind_param($checkRatingStmt, 'ii', $movieID, $userID);
-mysqli_stmt_execute($checkRatingStmt);
-$checkRatingResult = mysqli_stmt_get_result($checkRatingStmt);
-$ratingCount = mysqli_fetch_assoc($checkRatingResult)['count'];
+// // Check if user has already rated the movie
+// $checkRatingQuery = "SELECT COUNT(*) as count FROM rating WHERE movieID = ? AND userID = ?";
+// $checkRatingStmt = mysqli_prepare($con, $checkRatingQuery);
+// mysqli_stmt_bind_param($checkRatingStmt, 'ii', $movieID, $userID);
+// mysqli_stmt_execute($checkRatingStmt);
+// $checkRatingResult = mysqli_stmt_get_result($checkRatingStmt);
+// $ratingCount = mysqli_fetch_assoc($checkRatingResult)['count'];
 
-if ($ratingCount > 0) {
-    echo "You have already rated this movie. You cannot submit another rating.";
-    exit;
-}
+// if ($ratingCount > 0) {
+//     echo "You have already rated this movie. You cannot submit another rating.";
+//     exit;
+// }
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
