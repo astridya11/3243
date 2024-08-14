@@ -2,7 +2,7 @@
 require('database.php');
 
 // Fetch the movieID
-$movieID = isset($_REQUEST['movieID']) ? trim($_REQUEST['movieID']) : null;
+$movieID = isset($_GET['movieID']) ? trim($_GET['movieID']) : null;
 
 if (!$movieID) {
     echo "Error: Movie not found! (movieID not provided)";
