@@ -1,6 +1,7 @@
+<!--define constants for paths-->
 <?php
-define('BASE_PATH', dirname(__DIR__).'/'); // Base directory path
-define('CONTROLLER_PATH', BASE_PATH.'3243/controller/'); // Path to controllers
-define('MODEL_PATH', BASE_PATH.'3243/model/'); // Path to models
-define('VIEW_PATH', BASE_PATH.'3243/view/'); // Path to views
+define('BASE_PATH', __DIR__ . '/');
+define('CONTROLLER_PATH', BASE_PATH . 'controller/');
+define('MODEL_PATH', BASE_PATH . 'model/');
+define('VIEW_PATH', BASE_PATH . 'view/');
 ?>
