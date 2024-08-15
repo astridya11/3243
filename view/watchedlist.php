@@ -1,28 +1,16 @@
 <?php
-include("auth.php");
-require('database.php');
-
-$currentUserID = $_SESSION['userID'];
-
-$query = "SELECT movies.movieID, movies.title, movies.imageURL FROM watchedlist JOIN  movies ON watchedlist.movieID = movies.movieID
-    WHERE watchedlist.userID = '$currentUserID'";
-$result = mysqli_query($con, $query) or die(mysqli_error($con));
-$rows = mysqli_num_rows($result);
-
-if ($rows > 0) 
-{
-    $watchedlistData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} 
-else {
-    $status = "It's empty here, record your movie journey!";
-}
+    require_once ('../config.php');
+    require (CONTROLLER_PATH."processwatchedlist.php");
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Watched Movies</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link href="header.css" rel="stylesheet">
+
     <style>
     * {box-sizing: border-box;}
 
@@ -32,43 +20,6 @@ else {
         font-size: 15px;
         color: white;
         background-color: black;
-    }
-
-    /* navigation bar */
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: black;
-        padding: 0px 20px;
-        height: 10vh;
-    }
-
-    .header a {
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        font-size: 18px; 
-        line-height: 25px;
-        border-radius: 4px;
-    }
-
-    .header-left, .header-right {
-        display: flex;
-        align-items: center;
-    }
-
-    .header-left img,
-    .header-right img {
-        display: block;
-    }
-
-    .header-left img {
-        height: 45px;
-    }
-
-    .header-right img {
-        height: 25px;
     }
 
     /* title and status */
@@ -115,10 +66,10 @@ else {
     <!--navigation bar-->
     <div class="header">
         <div class="header-left">
-            <a href="movies_dashboard.php"><img src="image/logo-transparent.png"></a>
+            <a href="movies_dashboard.php"><img src="../model/image/logo-transparent.png"></a>
         </div>
         <div class="header-right">
-            <a href="profile.php"><img src="image/profile-icon.png"></a>
+            <a href="profile.php"><img src="../model/image/profile-icon.png"></a>
         </div>
     </div>
 

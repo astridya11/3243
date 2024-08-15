@@ -1,0 +1,38 @@
+/*navigation bar*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    padding: 0px 20px;
+    height: 10vh;
+  }
+
+  .header a {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px; 
+    line-height: 25px;
+    border-radius: 4px;
+  }
+
+  .header-left, .header-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-left img,
+  .header-right img {
+    display: block;
+  }
+
+  .header-left img {
+    height: 45px;
+    
+  }
+
+  .header-right img {
+    height: 25px;
+    
+  }
