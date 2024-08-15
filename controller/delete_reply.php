@@ -1,6 +1,7 @@
 <?php
-require 'auth.php'; // Ensure user is authenticated
-include 'database.php'; // Database connection file
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 // Retrieve parameters
 $replyID = isset($_GET['replyID']) ? mysqli_real_escape_string($con, $_GET['replyID']) : '';
@@ -55,4 +56,6 @@ if ($stmt->affected_rows > 0) {
 } else {
     die('Error deleting reply or reply not found.');
 }
+mysqli_stmt_close($stmt);
+mysqli_close($con);
 ?>

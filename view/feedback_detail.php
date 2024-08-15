@@ -1,6 +1,7 @@
 <?php
-require 'auth.php';
-include 'database.php';
+require_once '../config.php'; // Include configuration file
+include CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 // Validate and retrieve parameters
 $feedbackID = isset($_GET['feedbackID']) ? mysqli_real_escape_string($con, $_GET['feedbackID']) : '';
@@ -88,7 +89,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
                 </div>
                 <div id="reply-form-<?php echo $reply['replyID']; ?>" class="reply-form">
                     <h4>Reply to this reply</h4>
-                    <form action="submit_reply.php" method="POST">
+                    <form action="..\controller\submit_reply.php" method="POST">
                         <input type="hidden" name="feedbackID" value="<?php echo htmlspecialchars($feedbackID); ?>">
                         <input type="hidden" name="parentReplyID" value="<?php echo htmlspecialchars($reply['replyID']); ?>">
                         <div class="form-group">
@@ -122,7 +123,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
 <body>
     <script src="feedback_detail.js"></script>
     <div class="feedback-detail">
-    <a href="movies_details.php?movieID=<?php echo urlencode($movieID); ?>" class="back-btn">Back</a>
+    <a href="../movies_details.php?movieID=<?php echo urlencode($movieID); ?>" class="back-btn">Back</a>
         <h1><?php echo htmlspecialchars($feedback['feedbackTitle']); ?></h1>
         <div class="feedback-item">
             <div class="user-info">
@@ -158,7 +159,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
         <div class="reply-section">
             <h2>Replies</h2>
             <div id="reply-form-0" class="reply-form">
-                <form action="submit_reply.php" method="POST">
+                <form action="../controller/submit_reply.php" method="POST">
                     <input type="hidden" name="feedbackID" value="<?php echo htmlspecialchars($feedbackID); ?>">
                     <div class="form-group">
                         <label for="replyContent">Your Reply</label>
@@ -171,7 +172,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
             </div>
             <?php displayReplies(0, $all_replies, $feedbackID); ?>
             <h2>Reply</h2>
-            <form action="submit_reply.php" method="POST">
+            <form action="../controller/submit_reply.php" method="POST">
                 <input type="hidden" name="feedbackID" value="<?php echo htmlspecialchars($feedbackID); ?>">
                 <div class="form-group">
                     <label for="replyContent">Reply Content</label>
@@ -188,7 +189,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
         <div class="modal-content">
             <span class="close">&times;</span>
             <h4>Edit Reply</h4>
-            <form id="edit-reply-form" action="edit_reply.php" method="POST">
+            <form id="edit-reply-form" action="..\controller\edit_reply.php" method="POST">
                 <input type="hidden" name="replyID" id="edit-reply-id">
                 <input type="hidden" name="feedbackID" id="edit-feedback-id" value="<?php echo htmlspecialchars($feedbackID); ?>">
                 <div class="form-group">
@@ -206,8 +207,8 @@ function displayReplies($parentID, $replies, $feedbackID) {
             <div class="modal-content">
                 <span class="close-feedback">&times;</span>
                 <h4>Edit Feedback</h4>
-                <form id="edit-feedback-form" action="edit_feedback.php" method="POST">
-                <input type="hidden" name="feedbackID" id="edit-feedback-id">
+                <form id="edit-feedback-form" action="..\controller\edit_feedback.php" method="POST">
+                <input type="hidden" name="feedbackID" id="edit-feedback-id" value="<?php echo htmlspecialchars($feedbackID); ?>">
                     <div class="form-group">
                         <label for="edit-feedback-title">Feedback Title</label>
                         <input type="text" id="edit-feedback-title" name="feedbackTitle" required>

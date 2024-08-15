@@ -1,6 +1,7 @@
 <?php
-require 'auth.php'; // Ensure this script contains session start and authentication checks
-include 'database.php'; // Database connection
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 header('Content-Type: application/json');
 

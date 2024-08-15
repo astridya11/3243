@@ -1,5 +1,5 @@
 <?php
-include 'database.php'; // Include the database connection
+include MODEL_PATH . 'database.php';
 
 
 // Check if userID is set in the session
@@ -13,7 +13,8 @@ if (!isset($_SESSION['userID'])) {
 $userID = $_SESSION['userID'];
 
 // Get the movieID from query parameters and validate it
-$movieID = isset($_GET['movieID']) ? trim($_GET['movieID']) : null;
+$movieID = isset($_REQUEST['movieID']) ? trim($_GET['movieID']) : null;
+echo $movieID;
 
 // Determine sort order based on query parameter
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
@@ -27,7 +28,7 @@ $query = "SELECT f.feedbackID, f.feedbackTitle, f.feedbackContent, f.feedbackDat
         ORDER BY $orderBy";
 
 if ($stmt = mysqli_prepare($con, $query)) {
-    mysqli_stmt_bind_param($stmt, 'i', $movieID); // Bind movieID as an integer
+    mysqli_stmt_bind_param($stmt, 's', $movieID);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -284,7 +285,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
                             <i class="fas fa-thumbs-down"></i> 
                             <span><?php echo $row['feedbackDislike']; ?></span> Dislike
                         </button>
-                        <button class="read-more-btn" onclick="window.location.href='feedback_detail.php?feedbackID=<?php echo $row['feedbackID']; ?>'"><i class="fas fa-eye"></i> Read more</button>
+                        <button class="read-more-btn" onclick="window.location.href='view/feedback_detail.php?feedbackID=<?php echo $row['feedbackID']; ?>'"><i class="fas fa-eye"></i> Read more</button>
                         <?php if ($row['userID'] == $userID): ?>
                             <button class="delete-btn" data-feedback-id="<?php echo $row['feedbackID']; ?>"><i class="fas fa-trash-alt"></i> Delete</button>
                         <?php endif; ?>
@@ -301,7 +302,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
         <div class="popup-content">
             <span class="close" id="closeForm">&times;</span>
             <h2>Provide Your Feedback</h2>
-            <form action="submit_feedback.php" method="POST">
+            <form action="../controller/submit_feedback.php" method="POST">
                 <input type="hidden" name="movieID" value="<?php echo htmlspecialchars($movieID); ?>">
                 <div class="form-group">
                     <label for="feedbackTitle">Title</label>
@@ -370,7 +371,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
         confirmDeleteBtn.addEventListener('click', () => {
             if (deleteFeedbackID) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'delete_feedback.php', true);
+                xhr.open('POST', 'controller/delete_feedback.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function() {
                     if (xhr.status === 200) {
@@ -397,7 +398,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
                 const currentCount = parseInt(this.getAttribute(`data-feedback-${action}`));
 
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'update_feedback.php', true);
+                xhr.open('POST', 'controller/update_feedback.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function() {
                     if (xhr.status === 200) {
