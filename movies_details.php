@@ -181,77 +181,10 @@
     </script>
 
     <section class="new_realase top" id="feedback">
-        <div class="container">
-            <div class="owl-carousel owl-carousel2 owl-theme">
-                <div class="items">
-                    <div class="left">
-                        <div class="img">
-                            <img src="image/p2.jpg" alt="" />
-                        </div>
-                        <div class="heading">
-                            <h2><span></span> NEW REALEASE</h2>
-                            <h1>THE WARRIOR LIFE</h1>
-                        </div>
-                        <div class="time flex">
-                            <label>R</label>
-                            <i class="fas fa-circle"></i>
-                            <span>1hrs 50mins</span>
-                            <i class="fas fa-circle"></i>
-                            <a class="flex1"><img src="https://img.icons8.com/color/95/000000/imdb.png" />
-                                8.5</a>
-                            <i class="fas fa-circle"></i>
-                            <p>2021</p>
-                            <i class="fas fa-circle"></i>
-                            <button>Action</button>
-                        </div>
-
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                            enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat.
-                        </p>
-
-                        <div class="button flex">
-                            <button class="btn">PLAY NOW</button>
-                            <i id="playbtn" class="fas fa-play"></i>
-                            <p>WATCH TRAILER</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="feedback-section">
+            <?php include 'feedback.php'; ?>
         </div>
     </section>
-
-    <script>
-        $(".owl-carousel2").owlCarousel({
-            loop: true,
-            margin: 20,
-            dots: true,
-            items: 1,
-        });
-    </script>
-
-    <!-- paxi mate ko lai aata hai-->
-    <script>
-        $(".owl-carousel").owlCarousel({
-            loop: true,
-            margin: 20,
-            nav: true,
-            dots: false,
-            responsive: {
-                414: {
-                    items: 1,
-                },
-                600: {
-                    items: 2,
-                },
-                1000: {
-                    items: 4,
-                },
-            },
-        });
-    </script>
     <i id="playbtn" class="fas fa-user"></i>
 
     <script>
