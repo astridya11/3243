@@ -21,7 +21,7 @@ $movieID = $_REQUEST['movieID'];
 // Check if the user has already rated the movie
 $query = "SELECT ratingID, ratingStar, ratingDescription, ratingDate, lastModified FROM rating WHERE movieID = ? AND userID = ?";
 $stmt = mysqli_prepare($con, $query);
-mysqli_stmt_bind_param($stmt, 'si', $movieID, $userID);
+mysqli_stmt_bind_param($stmt, 'ss', $movieID, $userID);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_bind_result($stmt, $ratingID, $ratingStar, $ratingDescription, $ratingDate, $lastModified);
 if (!mysqli_stmt_fetch($stmt)) {
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update existing rating
     $query = "UPDATE rating SET ratingDescription = ?, ratingStar = ?, lastModified = NOW() WHERE ratingID = ? AND userID = ?";
     $stmt = mysqli_prepare($con, $query);
-    mysqli_stmt_bind_param($stmt, 'sisi', $ratingDescription, $ratingStar, $ratingID, $userID);
+    mysqli_stmt_bind_param($stmt, 'ssss', $ratingDescription, $ratingStar, $ratingID, $userID);
 
     if (mysqli_stmt_execute($stmt)) {
         $success = true;

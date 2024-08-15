@@ -9,7 +9,6 @@ if (!$movieID) {
     exit;
 }
 
-
 // Check if user has already rated the movie
 $userID = $_SESSION['userID'] ?? null;
 $ratingCount = 0;
@@ -30,15 +29,17 @@ mysqli_stmt_bind_param($ratingStmt, 's', $movieID);
 mysqli_stmt_execute($ratingStmt);
 $ratingResult = mysqli_stmt_get_result($ratingStmt);
 
-// Fetch rating with lastModified field and user details
+// Fetch rating with lastModified field and user details, prioritizing logged-in user's comment
 $reviewQuery = "SELECT r.ratingID, r.ratingTime, r.ratingDate, r.ratingDescription, r.ratingStar, r.lastModified, r.userID as reviewUserID, u.userName, u.userProfilePic
                 FROM rating r
                 JOIN users u ON r.userID = u.userID
-                WHERE r.movieID = ?";
+                WHERE r.movieID = ?
+                ORDER BY CASE WHEN r.userID = ? THEN 1 ELSE 0 END, r.ratingDate ASC, r.ratingTime ASC"; // Prioritize the logged-in user's comment
 $stmt = mysqli_prepare($con, $reviewQuery);
-mysqli_stmt_bind_param($stmt, 's', $movieID);
+mysqli_stmt_bind_param($stmt, 'ss', $movieID, $userID);
 mysqli_stmt_execute($stmt);
 $reviewResult = mysqli_stmt_get_result($stmt);
+    
 
 if ($ratingResult) {
     $totalRatings = 0;

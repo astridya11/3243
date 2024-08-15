@@ -21,7 +21,7 @@ $movieID = $_REQUEST['movieID'];
 // Check if the user has already rated the movie
 $query = "SELECT ratingID FROM rating WHERE movieID = ? AND userID = ?";
 $stmt = mysqli_prepare($con, $query);
-mysqli_stmt_bind_param($stmt, 'si', $movieID, $userID);
+mysqli_stmt_bind_param($stmt, 'ss', $movieID, $userID);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_bind_result($stmt, $ratingID);
 
@@ -34,7 +34,7 @@ mysqli_stmt_close($stmt);
 // Delete the rating
 $query = "DELETE FROM rating WHERE movieID = ? AND userID = ?";
 $stmt = mysqli_prepare($con, $query);
-mysqli_stmt_bind_param($stmt, 'si', $movieID, $userID);
+mysqli_stmt_bind_param($stmt, 'ss', $movieID, $userID);
 
 if (mysqli_stmt_execute($stmt)) {
     $success = true;
