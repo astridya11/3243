@@ -1,6 +1,7 @@
 <?php
-require 'auth.php';
-include 'database.php';
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 header('Content-Type: application/json');
 

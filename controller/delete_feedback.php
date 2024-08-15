@@ -1,6 +1,7 @@
 <?php
-require 'auth.php';
-include 'database.php';
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 // Check if the user is authenticated and if the feedbackID is provided
 if (!isset($_SESSION['userID']) || !isset($_POST['feedbackID'])) {

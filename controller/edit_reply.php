@@ -1,6 +1,7 @@
 <?php
-require 'auth.php';
-include 'database.php';
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $replyID = isset($_POST['replyID']) ? mysqli_real_escape_string($con, $_POST['replyID']) : '';
@@ -19,10 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        header('Location: feedback_detail.php?feedbackID=' . urlencode($_POST['feedbackID']));
+        header('Location: ../view/feedback_detail.php?feedbackID=' . urlencode($_POST['feedbackID']));
         exit();
     } else {
         die('Update failed.');
     }
 }
+mysqli_stmt_close($stmt);
+mysqli_close($con);
 ?>

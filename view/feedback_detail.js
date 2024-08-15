@@ -63,7 +63,7 @@ function handleReaction(button, itemType) {
     const userID = button.getAttribute('data-user-id');
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'update_reaction.php', true);
+    xhr.open('POST', "../controller/update_reaction.php", true); 
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     xhr.onload = function() {
@@ -117,12 +117,12 @@ function showEditFeedbackForm(feedbackID, feedbackTitle, feedbackContent) {
 
 function confirmDelete(replyID) {
     if (confirm('Are you sure you want to delete this reply?')) {
-        window.location.href = `delete_reply.php?replyID=${encodeURIComponent(replyID)}`;
+        window.location.href = `../controller/delete_reply.php?replyID=${encodeURIComponent(replyID)}`;
     }
 }
 
 function confirmDeleteFeedback(feedbackID) {
     if (confirm('Are you sure you want to delete this feedback?')) {
-        window.location.href = `delete_feedback.php?feedbackID=${encodeURIComponent(feedbackID)}`;
+        window.location.href = `../controller/delete_feedback.php?feedbackID=${encodeURIComponent(feedbackID)}`;
     }
 }

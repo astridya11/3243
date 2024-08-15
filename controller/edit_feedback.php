@@ -1,5 +1,7 @@
 <?php
-require 'database.php'; // Ensure this file is correctly included
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['userID'])) {
@@ -26,16 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Prepare and execute update query
     try {
-        $stmt = $pdo->prepare("UPDATE Feedback SET feedbackTitle = ?, feedbackContent = ? WHERE feedbackID = ?");
-        $stmt->execute([$feedbackTitle, $feedbackContent, $feedbackID]);
-
-        // Check if any rows were affected
-        if ($stmt->rowCount() > 0) {
-            echo json_encode(['status' => 'success', 'message' => 'Feedback updated successfully']);
-        } else {
-            http_response_code(404); // Not Found
-            echo json_encode(['status' => 'error', 'message' => 'Feedback not found or no changes made']);
+        $query = "UPDATE Feedback SET feedbackTitle = ?, feedbackContent = ? WHERE feedbackID = ?";
+        $stmt = $con->prepare($query);
+        if (!$stmt) {
+            die('Prepare failed: ' . htmlspecialchars($con->error));
         }
+        $stmt->bind_param('sss', $feedbackTitle, $feedbackContent, $feedbackID);
+        $stmt->execute();
+
     } catch (PDOException $e) {
         // Handle database error
         http_response_code(500); // Internal Server Error
@@ -45,4 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     http_response_code(405); // Method Not Allowed
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
+mysqli_stmt_close($stmt);
+mysqli_close($con);
 ?>

@@ -1,6 +1,7 @@
 <?php
-require 'auth.php';
-include 'database.php';
+require_once '../config.php'; // Include configuration file
+require CONTROLLER_PATH . 'auth.php';
+include MODEL_PATH . 'database.php';
 
 // Validate and retrieve parameters
 $feedbackID = isset($_POST['feedbackID']) ? mysqli_real_escape_string($con, $_POST['feedbackID']) : '';
@@ -50,10 +51,10 @@ $userID = $_SESSION['userID'];
 $query->bind_param("sssss", $replyID, $feedbackID, $userID, $replyContent, $parentReplyID);
 if ($query->execute()) {
     // Redirect to feedback_detail.php with a success status
-    header("Location: feedback_detail.php?feedbackID=" . urlencode($feedbackID) . "&status=success");
+    header("Location: ../view/feedback_detail.php?feedbackID=" . urlencode($feedbackID) . "&status=success");
 } else {
     // Redirect to feedback_detail.php with an error status
-    header("Location: feedback_detail.php?feedbackID=" . urlencode($feedbackID) . "&status=error");
+    header("Location: ../view/feedback_detail.php?feedbackID=" . urlencode($feedbackID) . "&status=error");
 }
 
 $con->close();
