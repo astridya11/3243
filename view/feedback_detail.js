@@ -115,14 +115,59 @@ function showEditFeedbackForm(feedbackID, feedbackTitle, feedbackContent) {
 
 }
 
-function confirmDelete(replyID) {
-    if (confirm('Are you sure you want to delete this reply?')) {
-        window.location.href = `../controller/delete_reply.php?replyID=${encodeURIComponent(replyID)}`;
+function confirmDelete(replyID, feedbackID) {
+    // Prompt the user for confirmation
+    const confirmed = confirm("Are you sure you want to delete this reply?");
+    
+    if (confirmed) {
+        // Create a new XMLHttpRequest object
+        const xhr = new XMLHttpRequest();
+        
+        // Configure it: POST-request for the URL /delete_reply.php
+        xhr.open('POST', '../controller/delete_reply.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        // Set up the callback function to handle the response
+        xhr.onload = function() {
+        // Handle request errors
+        xhr.onerror = function() {
+            alert('Request failed.');
+        };
+    }
+        
+        // Send the request with the replyID and feedbackID
+        xhr.send(`replyID=${encodeURIComponent(replyID)}&feedbackID=${encodeURIComponent(feedbackID)}`);
+        if (xhr){
+            alert("Deleted Sucessfully! Refresh this page.");
+        }
     }
 }
 
+
 function confirmDeleteFeedback(feedbackID) {
-    if (confirm('Are you sure you want to delete this feedback?')) {
-        window.location.href = `../controller/delete_feedback.php?feedbackID=${encodeURIComponent(feedbackID)}`;
+    // Prompt the user for confirmation
+    const confirmed = confirm("Are you sure you want to delete this feedback?");
+    
+    if (confirmed) {
+        // Create a new XMLHttpRequest object
+        const xhr = new XMLHttpRequest();
+        
+        // Configure it: POST-request for the URL /delete_reply.php
+        xhr.open('POST', '../controller/delete_feedback.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        // Set up the callback function to handle the response
+        xhr.onload = function() {
+        // Handle request errors
+        xhr.onerror = function() {
+            alert('Request failed.');
+        };
+    }
+        
+        // Send the request with the replyID and feedbackID
+        xhr.send(`feedbackID=${encodeURIComponent(feedbackID)}`);
+        if (xhr){
+            alert("Deleted Sucessfully! Return to Movie Detail.");
+        }
     }
 }
