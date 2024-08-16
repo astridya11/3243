@@ -1,4 +1,3 @@
-<!--define constants for paths-->
 <?php
 define('BASE_PATH', __DIR__ . '/');
 define('CONTROLLER_PATH', BASE_PATH . 'controller/');
