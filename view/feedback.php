@@ -14,7 +14,6 @@ $userID = $_SESSION['userID'];
 
 // Get the movieID from query parameters and validate it
 $movieID = isset($_REQUEST['movieID']) ? trim($_GET['movieID']) : null;
-echo $movieID;
 
 // Determine sort order based on query parameter
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
@@ -285,7 +284,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
                             <i class="fas fa-thumbs-down"></i> 
                             <span><?php echo $row['feedbackDislike']; ?></span> Dislike
                         </button>
-                        <button class="read-more-btn" onclick="window.location.href='view/feedback_detail.php?feedbackID=<?php echo $row['feedbackID']; ?>'"><i class="fas fa-eye"></i> Read more</button>
+                        <button class="read-more-btn" onclick="window.location.href='feedback_detail.php?feedbackID=<?php echo $row['feedbackID']; ?>'"><i class="fas fa-eye"></i> Read more</button>
                         <?php if ($row['userID'] == $userID): ?>
                             <button class="delete-btn" data-feedback-id="<?php echo $row['feedbackID']; ?>"><i class="fas fa-trash-alt"></i> Delete</button>
                         <?php endif; ?>
@@ -371,7 +370,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
         confirmDeleteBtn.addEventListener('click', () => {
             if (deleteFeedbackID) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'controller/delete_feedback.php', true);
+                xhr.open('POST', '../controller/delete_feedback.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function() {
                     if (xhr.status === 200) {
@@ -398,7 +397,7 @@ if ($stmt = mysqli_prepare($con, $query)) {
                 const currentCount = parseInt(this.getAttribute(`data-feedback-${action}`));
 
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'controller/update_feedback.php', true);
+                xhr.open('POST', '../controller/update_feedback.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function() {
                     if (xhr.status === 200) {

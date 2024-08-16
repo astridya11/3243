@@ -123,7 +123,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
 <body>
     <script src="feedback_detail.js"></script>
     <div class="feedback-detail">
-    <a href="../movies_details.php?movieID=<?php echo urlencode($movieID); ?>" class="back-btn">Back</a>
+    <a href="../view/movies_details.php?movieID=<?php echo urlencode($movieID); ?>" class="back-btn">Back</a>
         <h1><?php echo htmlspecialchars($feedback['feedbackTitle']); ?></h1>
         <div class="feedback-item">
             <div class="user-info">
@@ -207,7 +207,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
             <div class="modal-content">
                 <span class="close-feedback">&times;</span>
                 <h4>Edit Feedback</h4>
-                <form id="edit-feedback-form" action="..\controller\edit_feedback.php" method="POST">
+                <form id="edit-feedback-form" action="../controller/edit_feedback.php" method="POST">
                 <input type="hidden" name="feedbackID" id="edit-feedback-id" value="<?php echo htmlspecialchars($feedbackID); ?>">
                     <div class="form-group">
                         <label for="edit-feedback-title">Feedback Title</label>
