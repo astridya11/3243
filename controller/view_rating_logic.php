@@ -35,7 +35,7 @@ $reviewQuery = "SELECT r.ratingID, r.ratingTime, r.ratingDate, r.ratingDescripti
                 FROM rating r
                 JOIN users u ON r.userID = u.userID
                 WHERE r.movieID = ?
-                ORDER BY CASE WHEN r.userID = ? THEN 0 ELSE 1 END, r.ratingDate ASC, r.ratingTime ASC"; // Prioritize the logged-in user's comment
+                ORDER BY CASE WHEN r.userID = ? THEN 0 ELSE 1 END, r.ratingDate DESC, r.ratingTime DESC"; // Prioritize the logged-in user's comment
 $stmt = mysqli_prepare($con, $reviewQuery);
 mysqli_stmt_bind_param($stmt, 'ss', $movieID, $userID);
 mysqli_stmt_execute($stmt);
