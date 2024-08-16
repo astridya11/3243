@@ -129,7 +129,13 @@ require (CONTROLLER_PATH."movies_details_controller.php")
         });
     </script>
 
-    <?php include 'view_rating.php'?>
+    <section class="new_realase rate" id="ratings">
+        <div class="container">
+            <div class="items">
+                <div class="left"></div>
+            </div>
+        </div>
+    </section>
 
     <section class="popular mtop" id="trailer">
         <div class="container">
