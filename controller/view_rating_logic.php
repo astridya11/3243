@@ -1,4 +1,7 @@
 <?php
+require_once('../config.php');
+require(MODEL_PATH . 'database.php');
+
 // Fetch the movieID
 $movieID = isset($_GET['movieID']) ? trim($_GET['movieID']) : null;
 
@@ -32,12 +35,12 @@ $reviewQuery = "SELECT r.ratingID, r.ratingTime, r.ratingDate, r.ratingDescripti
                 FROM rating r
                 JOIN users u ON r.userID = u.userID
                 WHERE r.movieID = ?
-                ORDER BY CASE WHEN r.userID = ? THEN 1 ELSE 0 END, r.ratingDate ASC, r.ratingTime ASC"; // Prioritize the logged-in user's comment
+                ORDER BY CASE WHEN r.userID = ? THEN 0 ELSE 1 END, r.ratingDate ASC, r.ratingTime ASC"; // Prioritize the logged-in user's comment
 $stmt = mysqli_prepare($con, $reviewQuery);
 mysqli_stmt_bind_param($stmt, 'ss', $movieID, $userID);
 mysqli_stmt_execute($stmt);
 $reviewResult = mysqli_stmt_get_result($stmt);
-    
+
 
 if ($ratingResult) {
     $totalRatings = 0;
@@ -87,4 +90,3 @@ function timeAgo($datetime)
         return "$years year" . ($years > 1 ? 's' : '') . " ago";
     }
 }
-?>

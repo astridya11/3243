@@ -1,7 +1,7 @@
 <?php
-require_once('../controller.php');
+require_once('../config.php');
 require(CONTROLLER_PATH . "view_rating_logic.php");
-require('database.php');
+require(MODEL_PATH.'database.php');
 ?>
 
 <!DOCTYPE html>
