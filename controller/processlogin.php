@@ -30,7 +30,7 @@
       // header function must come with exit() or die()
       // die() is used to throw exception
       if($_SESSION['userRole'] == "admin"){
-        header("Location: view/profile.php");
+        header("Location: view/movies_dashboard.php");
       }else if($_SESSION['userRole'] == 'user'){
         header("Location: view/profile.php");
       }else{
