@@ -20,7 +20,7 @@ require(MODEL_PATH.'database.php');
     <div class="rating_container">
         <div class="rating-summary">
             <div class="rating-main">
-                <img src="image/star.png">
+                <img src="../model/image/star.png">
                 <h2><?php echo number_format($averageRating, 1); ?></h2>
             </div>
             <p><?php echo $totalReviews; ?> rated </p>
@@ -54,7 +54,7 @@ require(MODEL_PATH.'database.php');
                 <?php while ($review = mysqli_fetch_assoc($reviewResult)) : ?>
                     <div class="user-review">
                         <div class="user-info">
-                            <img src="<?php echo htmlspecialchars($review['userProfilePic'] ? $review['userProfilePic'] : 'image/default-pic.png'); ?>" class="user-image">
+                            <img src="<?php echo htmlspecialchars($review['userProfilePic'] ? $review['userProfilePic'] : '../model/image/default-pic.png'); ?>" class="user-image">
                             <div>
                                 <p class="user-name">
                                     <?php echo htmlspecialchars($review['userName']); ?>
