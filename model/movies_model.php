@@ -13,17 +13,36 @@ class MoviesModel
         }
     }
 
+    public function check_existing_movies($title, $dateReleased)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM movies WHERE title= ? AND dateReleased= ?");
+        $stmt->bind_param("ss", $title, $dateReleased);
+        $stmt->execute();
+        $check_result = $stmt->get_result();
+
+        $is_exist = $check_result->num_rows > 0;
+
+        // Close the statement after getting the result
+        $stmt->close();
+
+        // Return the boolean result
+        return $is_exist;
+    }
+
+
     public function insert_movies($movieID, $title, $dateReleased, $duration, $genre, $language, $country, $director, $cast, $synopsis, $imageURL, $videoURL_1, $videoURL_2, $videoURL_3, $videoURL_4, $videoURL_5, $videoURL_6, $videoURL_7, $videoURL_8, $videoURL_9, $videoURL_10, $submittedBy)
     {
         $stmt = $this->conn->prepare("INSERT INTO movies (movieID, title, dateReleased, duration, genre, `language`, country, director, cast, synopsis, imageURL, videoURL_1, videoURL_2, videoURL_3, videoURL_4, videoURL_5, videoURL_6, videoURL_7, videoURL_8, videoURL_9, videoURL_10, submittedBy) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sis", $movieID, $title, $dateReleased, $duration, $genre, $language, $country, $director, $cast, $synopsis, $imageURL, $videoURL_1, $videoURL_2, $videoURL_3, $videoURL_4, $videoURL_5, $videoURL_6, $videoURL_7, $videoURL_8, $videoURL_9, $videoURL_10, $submittedBy);
-        $stmt->execute();
+        $stmt->bind_param("ssssssssssssssssssssss", $movieID, $title, $dateReleased, $duration, $genre, $language, $country, $director, $cast, $synopsis, $imageURL, $videoURL_1, $videoURL_2, $videoURL_3, $videoURL_4, $videoURL_5, $videoURL_6, $videoURL_7, $videoURL_8, $videoURL_9, $videoURL_10, $submittedBy);
+
+        return $stmt->execute();
+
         $stmt->close();
     }
 
     public function read_movies()
     {
-        $sql = "SELECT * FROM movies";
+        $sql = "SELECT * FROM movies ORDER BY movieID DESC";
         $result = $this->conn->query($sql);
 
         $data = [];

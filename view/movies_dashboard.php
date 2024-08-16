@@ -10,13 +10,19 @@ require(CONTROLLER_PATH . "movies_dashboard_controller.php")
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="movies_dashboard.css" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <title>Movies Dashboard</title>
 </head>
 
 <body>
-    <header style="justify-content: flex-end;">
+    <header>
+    <nav>
+            <ul id="menuitem">
+                <li><i id="refreshbtn" class="fa fa-refresh" aria-hidden="true" ></i></li>
+            </ul>
+        </nav>
         <div class="subscribe flex" style="align-items: center;">
             <form id="form" class="form" action="search_movies.php" method="POST">
                 <input type="text" placeholder="Search" id="search" class="search" name="search" />
@@ -50,9 +56,13 @@ require(CONTROLLER_PATH . "movies_dashboard_controller.php")
     </main>
 
     <script>
+        document.getElementById("refreshbtn").onclick = function() {
+            window.location.reload();
+        }; 
         document.getElementById("playbtn").onclick = function() {
             window.location.href = "profile.php";
         };
+
     </script>
 
 </body>

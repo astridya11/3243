@@ -13,37 +13,6 @@ require(CONTROLLER_PATH . "search_movies_controller.php")
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        header{
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header nav {
-            align-items: center;
-            transition: 0.5s;
-        }
-
-        header nav ul {
-            display: inline-block;
-            font-size: 16px;
-        }
-
-        header nav ul li a {
-            color: white;
-            transition: all 300ms ease-in-out;
-            font-size: 20px;
-        }
-
-        header nav ul li a:hover {
-            color: red;
-        }
-
-        header nav ul li {
-            margin-right: 20px;
-            display: inline-block;
-        }
-    </style>
     <title>Search</title>
 </head>
 
