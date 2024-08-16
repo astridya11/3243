@@ -1,3 +1,8 @@
+<?php
+    require_once ('../config.php');
+    require (CONTROLLER_PATH."processsignup.php");
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign Up</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link href="header.css" rel="stylesheet">
+    
     <style>
       * {box-sizing: border-box;}
 
@@ -14,44 +21,6 @@
         font-size: 15px;
         color: white;
         background-color: black;
-      }
-
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: black;
-        padding: 0px 20px;
-        height: 10vh;
-      }
-
-      .header a {
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        font-size: 18px; 
-        line-height: 25px;
-        border-radius: 4px;
-      }
-
-      .header-left, .header-right {
-        display: flex;
-        align-items: center;
-      }
-
-      .header-left img,
-      .header-right img {
-        display: block;
-      }
-
-      .header-left img {
-        height: 45px;
-        
-      }
-
-      .header-right img {
-        height: 25px;
-        
       }
 
       .container {
@@ -70,7 +39,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-image: url('image/background.png');
+        background-image: url('../model/image/background.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -141,75 +110,15 @@
   <body>
     <div class="header">
       <div class="header-left">
-        <a href="movie.php"><img src="image/logo-transparent.png"></a>
+        <a href="movies_dashboard.php"><img src="../model/image/logo-transparent.png"></a>
       </div>
       <div class="header-right">
-        <a href="profile.php"><img src="image/profile-icon.png"></a>
+        <a href="profile.php"><img src="../model/image/profile-icon.png"></a>
       </div>
     </div>
-
-    <?php
-      require('database.php');
-      if (isset($_REQUEST['username']))
-      {
-        // check if username already exists in database
-        $username = stripslashes($_REQUEST['username']);
-        $username = mysqli_real_escape_string($con,$username);
-
-        $checkquery = "SELECT *
-          FROM `users`
-          WHERE userName='$username'";
-        $checkresult = mysqli_query($con,$checkquery) or die(mysqli_error($con));
-        $checkrows = mysqli_num_rows($checkresult);
-
-        // username exists, reject
-        if($checkrows == 1)
-        {
-          echo '<script>
-              alert("Username is taken.\nPlease choose another.");
-              window.location.href = "signup.php";
-          </script>';
-        }
-        // username doesn't exists, proceed to registration
-        else
-        {
-          $userID = 'user' . date('YmdHis');
-
-          $email = stripslashes($_REQUEST['email']);
-          $email = mysqli_real_escape_string($con,$email);
-
-          $password = stripslashes($_REQUEST['password']);
-          $password = mysqli_real_escape_string($con,$password);
-
-          $reg_date = date("Y-m-d");
-          $role = "user";
-
-          $query = "INSERT into `users` (userID, userName, userPassword, userEmail, userRegDate, userRole )
-                    VALUES ('$userID', '$username', '".md5($password)."', '$email', '$reg_date', '$role')";
-          $result = mysqli_query($con,$query);
-
-          if($result)
-          {
-            echo '<script>
-              alert("You are registered successfully.\nClick OK to go to the login page.");
-              window.location.href = "login.php";
-            </script>';
-          }
-          else
-          {
-            echo '<script>
-              alert("Registration failed.\nClick OK to go to the registration page.");
-              window.location.href = "signup.php";
-            </script>';
-          }
-        }
-      }
-      else
-      {
-    ?>
       <div class="container">
       <div class="logo">
-        <img src="image/logo-transparent.png">
+        <img src="../model/image/logo-transparent.png">
         <p style="font-size: 20px; font-weight:bolder; margin-top: -20px">Your movie partner, <span style="color: #f2b704;">Four Of Us</span>.</p>
       </div>
       <div class="sign-up-container">
@@ -230,11 +139,8 @@
           <button type="submit">Sign Up</button>
           </form>
         </div>
-        <pre class="go-to-login">Already have an account? <a href="login.php" class="tologin">Login here.</a></pre>
+        <pre class="go-to-login">Already have an account? <a href="../" class="tologin">Login here.</a></pre>
       </div>
     </div>
-    <?php
-      }
-    ?>
   </body>
 </html>

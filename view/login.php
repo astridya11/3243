@@ -1,60 +1,15 @@
 <?php
-  session_start();
-  require('database.php');
-  if (isset($_POST['username']))
-  {
-    $username = stripslashes($_REQUEST['username']);
-    $username = mysqli_real_escape_string($con,$username);
-
-    $password = stripslashes($_REQUEST['password']);
-    $password = mysqli_real_escape_string($con,$password);
-
-    $query = "SELECT *
-          FROM `users`
-          WHERE userName='$username'
-          AND userPassword='".md5($password)."'";
-        
-    $result = mysqli_query($con,$query) or die(mysqli_error($con));
-    // return the number of rows in result set
-    $rows = mysqli_num_rows($result);
-    $userData = mysqli_fetch_assoc($result);
-        
-    // profile exists
-    if($rows == 1)
-    {
-      $_SESSION['username'] = $username;
-      $_SESSION['userID'] = $userData["userID"];
-      $_SESSION['userRole'] = $userData["userRole"];
-
-      // header function must come with exit() or die()
-      // die() is used to throw exception
-      if($_SESSION['userRole'] == "admin"){
-        header("Location: create_movies.php");
-      }else if($_SESSION['userRole'] == 'user'){
-        header("Location: movies_dashboard.php");
-      }else{
-        echo("Invalid user");
-      }
-      
-      exit();
-    }
-    else
-    {
-      echo '<script>
-              alert("Username/password is incorrect.\nClick OK to try again.");
-              window.location.href = "login.php";
-          </script>';
-    }
-  }
-  else
-  {
+    require (CONTROLLER_PATH."processlogin.php");
 ?>
+    
     <!DOCTYPE html>
     <html>
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Log In</title>
       <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+      <link href="view/header.css" rel="stylesheet">
+
       <style>
       * {box-sizing: border-box;}
 
@@ -64,44 +19,6 @@
         font-size: 15px;
         color: white;
         background-color: black;
-      }
-
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: black;
-        padding: 0px 20px;
-        height: 10vh;
-      }
-
-      .header a {
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        font-size: 18px; 
-        line-height: 25px;
-        border-radius: 4px;
-      }
-
-      .header-left, .header-right {
-        display: flex;
-        align-items: center;
-      }
-
-      .header-left img,
-      .header-right img {
-        display: block;
-      }
-
-      .header-left img {
-        height: 45px;
-        
-      }
-
-      .header-right img {
-        height: 25px;
-        
       }
 
       .container{
@@ -289,10 +206,10 @@
     <body>
       <div class="header">
         <div class="header-left">
-          <a href="movies_dashboard.php"><img src="image/logo-transparent.png"></a>
+          <a href="view/movies_dashboard.php"><img src="image/logo-transparent.png"></a>
         </div>
         <div class="header-right">
-          <a href="profile.php"><img src="image/profile-icon.png"></a>
+          <a href="view/profile.php"><img src="image/profile-icon.png"></a>
         </div>
       </div>
       <div class="container">
@@ -315,7 +232,7 @@
             <!-- <p id="forgot-password" class="forgot-password" onclick="togglePopup()" style="cursor: pointer;">Forgot Password?</p> -->
           </div>
         
-          <pre class="go-to-signup">Don't have an account? <a href="signup.php" class="tosignup">Register now.</a></pre>
+          <pre class="go-to-signup">Don't have an account? <a href="view/signup.php" class="tosignup">Register now.</a></pre>
         </div>
       </div>
       <div id="popupOverlay" class="overlay-container">
@@ -329,9 +246,6 @@
           <button class="btn-close-popup" onclick="togglePopup()"> Close </button> 
         </section>
       </div>
-<?php
-  }
-?>
     
       <script>
         // display form when "Forgot Password?" button is clicked and close the form
