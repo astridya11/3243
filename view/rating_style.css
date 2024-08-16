@@ -1,12 +1,12 @@
 * {
     box-sizing: border-box;
-      font-family: 'Poppins';
+    font-family: 'Poppins';
 
 }
 
 .rating_body {
     margin: 0;
-  
+
     font-size: 15px;
     color: white;
     background-color: black;
@@ -19,11 +19,11 @@
     align-items: center;
     background-color: #f2b704;
     padding: 0 20px;
-    height: 10vh; 
-    width: 100%; 
-    box-sizing: border-box; 
-    position: fixed; 
-    top: 0;     
+    height: 10vh;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
     left: 0;
 }
 
@@ -31,12 +31,13 @@
     color: white;
     text-align: center;
     text-decoration: none;
-    font-size: 18px; 
+    font-size: 18px;
     line-height: 25px;
     border-radius: 4px;
 }
 
-.header-left, .header-right {
+.header-left,
+.header-right {
     display: flex;
     align-items: center;
 }
@@ -155,6 +156,7 @@
 /* User review section */
 .user-review-container {
     background-color: rgb(243, 243, 243);
+    height: fit-content;
     margin: 15px;
     border-radius: 10px;
     padding: 15px;
@@ -169,7 +171,7 @@
     align-items: center;
     margin-bottom: 30px;
     flex-wrap: wrap;
-    padding-left: 20px; 
+    padding-left: 20px;
 }
 
 .user-review-header h2 {
@@ -215,7 +217,8 @@
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px; /* Space between reviews */
+    margin-bottom: 10px;
+    /* Space between reviews */
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -254,17 +257,23 @@
 }
 
 .review-content {
-    flex-grow: 2;
+    flex-grow: 1;
     padding-left: 20px;
     margin-left: 20px;
     border-left: 1px solid gray;
-    min-width: 200px;
+    min-width: 0; 
+    box-sizing: border-box;  
+    width: 100%; 
 }
 
+/* For review text wrapping */
 .review-text {
     margin: 5px 0;
     color: #333;
     font-size: 16px;
+    word-wrap: break-word;
+    /* Ensures long words wrap within the container */
+    word-break: break-word;
 }
 
 .review-rating {
@@ -300,7 +309,7 @@
     border-radius: 5px;
     border: none;
     cursor: pointer;
-    width: 120px; 
+    width: 120px;
 }
 
 .edit-review {
@@ -324,12 +333,21 @@
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .user-review {
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
+        background-color: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+        position: relative;
+        max-width: 100%;
     }
 
     .review-rating {
         align-items: flex-start;
+        width: 100%;  /* Ensure it fits within the parent container */
     }
 
     .user-review-header {
@@ -350,10 +368,10 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     width: 400px;
     max-width: 90%;
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .rating-box h2 {
@@ -374,30 +392,34 @@
 .rating-box .star-rating {
     display: flex;
     flex-direction: row-reverse;
-    gap: 10px; 
-    justify-content: center; 
+    gap: 10px;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
 .rating-box .star-rating input {
-    display: none; /* Hide default radio buttons */
+    display: none;
+    /* Hide default radio buttons */
 }
 
 .rating-box .star-rating label {
-    font-size: 50px; 
-    color: #ddd; /* Inactive star color */
+    font-size: 50px;
+    color: #ddd;
+    /* Inactive star color */
     cursor: pointer;
-    transition: color 0.3s, text-shadow 0.3s; /* Smooth transition */
+    transition: color 0.3s, text-shadow 0.3s;
+    /* Smooth transition */
 }
 
-.rating-box .star-rating input:checked ~ label {
-    color: #f2b704; /* Active star color */
+.rating-box .star-rating input:checked~label {
+    color: #f2b704;
+    /* Active star color */
 }
 
 .rating-box .star-rating label:hover,
-.rating-box .star-rating label:hover ~ label {
-    color: #fcdf03; 
-    text-shadow: 0 0 20px #fcf403; 
+.rating-box .star-rating label:hover~label {
+    color: #fcdf03;
+    text-shadow: 0 0 20px #fcf403;
 }
 
 .rating-box textarea {
@@ -405,8 +427,9 @@
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
+    width: 300px;
     box-sizing: border-box;
+    word-wrap: break-word;
 }
 
 .rating-box button {
@@ -425,8 +448,8 @@
 
 .edited-info {
     padding-left: 5px;
-    color: gray; 
+    color: gray;
     font-size: 12px;
-    font-weight: lighter; 
-    font-style: italic; 
+    font-weight: lighter;
+    font-style: italic;
 }

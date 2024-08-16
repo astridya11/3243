@@ -1,6 +1,5 @@
 <?php
 require_once('../config.php');
-require(CONTROLLER_PATH . 'auth.php');
 require(MODEL_PATH . 'database.php');
 
 // Check if user is logged in
@@ -23,7 +22,9 @@ if (isset($_REQUEST['movieID'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ratingID = 'rating' . date('YmdHis');
     $ratingStar = $_POST['ratingStar'];
-    $ratingDescription = $_POST['ratingDescription'];
+    
+    // Escape special characters in ratingDescription
+    $ratingDescription = mysqli_real_escape_string($con, $_POST['ratingDescription']);
 
     // Insert rating into database
     $query = "INSERT INTO rating (ratingID, ratingDate, ratingTime, ratingDescription, ratingStar, userID, movieID)
@@ -36,3 +37,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Error: " . mysqli_error($con);
     }
 }
+?>
