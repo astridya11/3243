@@ -205,6 +205,10 @@
     flex-direction: column;
 }
 
+.reviews-scrollable p {
+    color: black;
+}
+
 
 .user-review {
     background-color: white;
