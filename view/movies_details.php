@@ -1,9 +1,7 @@
-<?php include('read_movies_details.php');
-require_once('../controller.php');
-require(CONTROLLER_PATH . "view_rating_logic.php");
-require(MODEL_PATH.'database.php');
+<?php 
+require_once ('../config.php');
+require (CONTROLLER_PATH."movies_details_controller.php")
 ?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -23,15 +21,15 @@ require(MODEL_PATH.'database.php');
     <!-- jquery css-->
 
     <style>
-        .home {
-            color: white;
-            background-image: url(<?php echo $row['imageURL']; ?>);
-            background-repeat: no-repeat;
-            background-position: right;
-            background-size: contain;
-            height: 100vh;
-            width: 100%;
-        }
+     .home {
+    color: white;
+    background-image: url(<?php echo $row['imageURL']; ?>);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+    height: 100vh;
+    width: 100%;
+}
     </style>
 
 </head>
@@ -131,7 +129,13 @@ require(MODEL_PATH.'database.php');
         });
     </script>
 
-    <?php include '../view/view_rating.php'; ?>
+    <section class="new_realase rate" id="ratings">
+        <div class="container">
+            <div class="items">
+                <div class="left"></div>
+            </div>
+        </div>
+    </section>
 
     <section class="popular mtop" id="trailer">
         <div class="container">
