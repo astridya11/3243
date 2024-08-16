@@ -1,4 +1,7 @@
-<?php include('read_movies_details.php'); ?>
+<?php 
+require_once ('../config.php');
+require (CONTROLLER_PATH."movies_details_controller.php")
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
