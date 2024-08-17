@@ -19,10 +19,10 @@ require(MODEL_PATH . 'database.php');
     <!-- header section -->
     <div class="header">
         <div class="header-left">
-            <a href="movies_dashboard.php"><img src="../image/logo-transparent.png"></a>
+            <a href="movies_dashboard.php"><img src="../model/image/logo-transparent.png"></a>
         </div>
         <div class="header-right">
-            <a href="profile.php"><img src="../image/profile-icon.png"></a>
+            <a href="profile.php"><img src="../model/image/profile-icon.png"></a>
         </div>
     </div>
 
