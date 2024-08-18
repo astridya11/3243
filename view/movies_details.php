@@ -1,6 +1,6 @@
-<?php 
-require_once ('../config.php');
-require (CONTROLLER_PATH."movies_details_controller.php")
+<?php
+require_once('../config.php');
+require(CONTROLLER_PATH . "movies_details_controller.php")
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -21,15 +21,15 @@ require (CONTROLLER_PATH."movies_details_controller.php")
     <!-- jquery css-->
 
     <style>
-     .home {
-    color: white;
-    background-image: url(<?php echo $row['imageURL']; ?>);
-    background-repeat: no-repeat;
-    background-position: right;
-    background-size: contain;
-    height: 100vh;
-    width: 100%;
-}
+        .home {
+            color: white;
+            background-image: url(<?php echo $row['imageURL']; ?>);
+            background-repeat: no-repeat;
+            background-position: right;
+            background-size: contain;
+            height: 100vh;
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -128,8 +128,10 @@ require (CONTROLLER_PATH."movies_details_controller.php")
             header.classList.toggle("sticky", window.scrollY > 50);
         });
     </script>
+    <section class="new_realase rate" id="ratings">
 
-        <?php include 'view_rating.php'?>
+        <?php include 'view_rating.php' ?>
+    </section>
 
     <section class="popular mtop" id="trailer">
         <div class="container">
