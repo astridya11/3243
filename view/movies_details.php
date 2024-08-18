@@ -134,7 +134,7 @@ require(CONTROLLER_PATH . "movies_details_controller.php")
     </section>
 
     <section class="popular mtop" id="trailer">
-        <div class="container">
+        <div class="container" style="padding-left: 30px;">
             <div class="heading flex1">
                 <h2>Trailers</h2>
                 <a href="movies_dashboard.php"><button class="more_movies_btn">MORE MOVIES</button></a>
