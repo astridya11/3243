@@ -37,7 +37,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-image: url('image/background.png');
+        background-image: url('model/image/background.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -206,15 +206,15 @@
     <body>
       <div class="header">
         <div class="header-left">
-          <a href="view/movies_dashboard.php"><img src="image/logo-transparent.png"></a>
+          <a href="view/movies_dashboard.php"><img src="model/image/logo-transparent.png"></a>
         </div>
         <div class="header-right">
-          <a href="view/profile.php"><img src="image/profile-icon.png"></a>
+          <a href="view/profile.php"><img src="model/image/profile-icon.png"></a>
         </div>
       </div>
       <div class="container">
         <div class="intro">
-          <img src="image/logo-transparent.png">
+          <img src="model/image/logo-transparent.png">
           <p style="font-size: 20px; font-weight:bolder; margin-top: -20px">Your movie partner, <span style="color: #f2b704;">Four Of Us</span>.</p>
         </div>
         <div class="log-in-container">
