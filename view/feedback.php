@@ -255,11 +255,9 @@ if ($stmt = mysqli_prepare($con, $query)) {
                 <div class="feedback-item">
                     <div class="feedback-content-header">
                         <div class="user-info">
-                            <?php if ($row['userProfilePic']): ?>
-                                <img src="<?php echo htmlspecialchars($row['userProfilePic']); ?>" alt="<?php echo htmlspecialchars($row['userName']); ?>'s Profile Picture">
-                            <?php else: ?>
-                                <img src="default-profile-pic.jpg" alt="Default Profile Picture">
-                            <?php endif; ?>
+                           
+                                <img src="<?php echo htmlspecialchars($row['userProfilePic'] ?$row['userProfilePic'] : '../model/image/_default-pic.png'); ?> " >
+                           
                             <div>
                                 <div><?php echo htmlspecialchars($row['userName']); ?></div>
                                 <div><?php echo htmlspecialchars($row['feedbackDateTime']); ?></div>

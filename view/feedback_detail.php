@@ -60,7 +60,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
             ?>
             <div class="reply-item" id="reply-<?php echo htmlspecialchars($reply['replyID']); ?>">
                 <div class="user-info">
-                    <img src="<?php echo htmlspecialchars($reply['userProfilePic'] ?? 'default-profile-pic.jpg'); ?>" alt="<?php echo htmlspecialchars($reply['userName']); ?>'s Profile Picture">
+                    <img src="<?php echo htmlspecialchars($reply['userProfilePic'] ?$reply['userProfilePic'] : '../model/image/_default-pic.png'); ?>" alt="<?php echo htmlspecialchars($reply['userName']); ?>'s Profile Picture">
                     <div>
                         <div class="user-name"><?php echo htmlspecialchars($reply['userName']); ?></div>
                         <div class="reply-date"><?php echo htmlspecialchars($reply['replyDateTime']); ?></div>
@@ -127,7 +127,7 @@ function displayReplies($parentID, $replies, $feedbackID) {
         <h1><?php echo htmlspecialchars($feedback['feedbackTitle']); ?></h1>
         <div class="feedback-item">
             <div class="user-info">
-                <img src="<?php echo htmlspecialchars($feedback['userProfilePic'] ?? 'default-profile-pic.jpg'); ?>" 
+                <img src="<?php echo htmlspecialchars($feedback['userProfilePic'] ?$feedback['userProfilePic'] : '../model/image/_default-pic.png'); ?>" 
                      alt="<?php echo htmlspecialchars($feedback['userName']); ?>'s Profile Picture">
                 <div>
                     <div class="user-name"><?php echo htmlspecialchars($feedback['userName']); ?></div>
