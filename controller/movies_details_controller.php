@@ -1,4 +1,5 @@
 <?php
+session_start();
 require(MODEL_PATH . 'movies_model.php');
 
 $movieID = $_REQUEST['movieID'];
