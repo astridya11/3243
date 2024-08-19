@@ -1,10 +1,11 @@
 <?php
-include("auth.php");
 require(MODEL_PATH . 'movies_model.php');
 
 $movieID = $_REQUEST['movieID'];
-$userRole = $_SESSION['userRole'];
-$userID = $_SESSION['userID'];
+
+$userID = $_SESSION['userID'] ?? null;
+$userRole = $_SESSION['userRole'] ?? null;
+
 $moviesModel = new MoviesModel("localhost", "root", "", "3243");
 $row = $moviesModel->read_movies_details($movieID);
 
@@ -36,6 +37,12 @@ function getEmbedUrl($url)
 }
 
 if (isset($_POST['watchedButton'])) {
+    if (!isset($_SESSION['userID'])) 
+    {
+        // Redirect to login page or show an error
+        header("Location: ../");
+        exit();
+    }
 
     // check whether already in watchedlist
     $check_result = $moviesModel->check_watched_list($movieID, $userID);
@@ -61,6 +68,12 @@ if (isset($_POST['watchedButton'])) {
 
 
 if (isset($_POST['wishlistButton'])) {
+    if (!isset($_SESSION['userID'])) 
+    {
+        // Redirect to login page or show an error
+        header("Location: ../");
+        exit();
+    }
 
     // check whether already in wishlist
     $check_result = $moviesModel->check_wish_list($movieID, $userID);

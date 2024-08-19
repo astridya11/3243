@@ -1,16 +1,8 @@
 <?php
 include MODEL_PATH . 'database.php';
 
-
-// Check if userID is set in the session
-if (!isset($_SESSION['userID'])) {
-    // Redirect to login page or show an error
-    header("Location: login.php");
-    exit();
-}
-
 // Get user ID from session
-$userID = $_SESSION['userID'];
+$userID = $_SESSION['userID'] ?? null;
 
 // Get the movieID from query parameters and validate it
 $movieID = isset($_REQUEST['movieID']) ? trim($_GET['movieID']) : null;
@@ -411,7 +403,8 @@ if ($stmt = mysqli_prepare($con, $query)) {
                                 alert(response.message || 'Error processing your request.');
                             }
                         } catch (e) {
-                            alert('Error parsing response.');
+                            alert('Please log in first to perform the action.');
+                            window.location.href = "../";
                         }
                     } else {
                         alert('Error processing your request.');
