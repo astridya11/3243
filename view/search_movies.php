@@ -39,7 +39,7 @@ require(CONTROLLER_PATH . "search_movies_controller.php")
 
         <?php foreach ($search_data as $item) : ?>
 
-            <a href="movies_details.php echo urlencode($item['movieID']); ?>" class="movie">
+            <a href="movies_details.php?movieID=<?php echo urlencode($item['movieID']); ?>" class="movie">
 
                 <img src="<?php echo $item['imageURL']; ?>" alt="<?php echo $item['title']; ?>">
                 <div class="movie-info">

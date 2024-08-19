@@ -1,5 +1,4 @@
 <?php
-include("auth.php");
 require_once('../config.php');
 require(MODEL_PATH . 'movies_model.php');
 
