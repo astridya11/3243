@@ -9,14 +9,13 @@
 body {
     background: #161616;
     font-family: "Poppins", sans-serif;
-    margin: -10px -4px 0;
+    margin: 0px;
 }
 
 /*---------global------*/
 .container {
-    max-width: 95%;
-    margin: auto;
-    margin-top: 10px;
+    max-width: 98%;
+    margin: 0;
 }
 
 a {
@@ -117,7 +116,7 @@ header .navbar span {
     line-height: 40px;
     text-align: center;
     border-radius: 50%;
-    margin: 4px 12px;
+    margin: 12px;
 }
 
 button {
@@ -267,6 +266,10 @@ h1 {
     line-height: 40px;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.home_content{
+    padding-left: 8px;
 }
 
 .home_content p {

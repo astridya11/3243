@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt->bind_param('sss', $feedbackTitle, $feedbackContent, $feedbackID);
         $stmt->execute();
+        header("Location: ../view/feedback_detail.php?feedbackID=" . urlencode($feedbackID) . "&status=success");
 
     } catch (PDOException $e) {
         // Handle database error

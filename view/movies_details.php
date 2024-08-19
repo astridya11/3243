@@ -1,4 +1,7 @@
-<?php include('read_movies_details.php'); ?>
+<?php 
+require_once ('../config.php');
+require (CONTROLLER_PATH."movies_details_controller.php")
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -126,13 +129,7 @@
         });
     </script>
 
-    <section class="new_realase rate" id="ratings">
-        <div class="container">
-            <div class="items">
-                <div class="left"></div>
-            </div>
-        </div>
-    </section>
+        <?php include 'view_rating.php'?>
 
     <section class="popular mtop" id="trailer">
         <div class="container">

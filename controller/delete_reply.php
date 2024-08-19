@@ -4,9 +4,9 @@ require CONTROLLER_PATH . 'auth.php';
 include MODEL_PATH . 'database.php';
 
 // Retrieve parameters
-$replyID = isset($_GET['replyID']) ? mysqli_real_escape_string($con, $_GET['replyID']) : '';
+$replyID = isset($_POST['replyID']) ? mysqli_real_escape_string($con, $_POST['replyID']) : '';
 $userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : '';
-$feedbackID = isset($_GET['feedbackID']) ? mysqli_real_escape_string($con, $_GET['feedbackID']) : '';
+$feedbackID = isset($_POST['feedbackID']) ? mysqli_real_escape_string($con, $_POST['feedbackID']) : '';
 
 // Debugging output
 if (empty($replyID)) {
@@ -51,7 +51,7 @@ $stmt->execute();
 // Check if deletion was successful
 if ($stmt->affected_rows > 0) {
     // Redirect back to the feedback detail page with the feedbackID
-    header("Location: feedback_detail.php?feedbackID=" . urlencode($feedbackID));
+    header("Location: ../view/feedback_detail.php?feedbackID=" . urlencode($feedbackID));
     exit();
 } else {
     die('Error deleting reply or reply not found.');

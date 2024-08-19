@@ -8,6 +8,15 @@ header('Content-Type: application/json');
 $response = ['status' => 'error', 'message' => 'Unknown error'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    $requiredParams = ['itemID', 'userID', 'reaction', 'itemType'];
+    foreach ($requiredParams as $param) {
+        if (empty($_POST[$param])) {
+            $response['message'] = 'Missing parameter: ' . $param;
+            echo json_encode($response);
+            exit();
+        }
+    }
     $itemID = $_POST['itemID']; // This should be either feedbackID or replyID
     $userID = $_POST['userID'];
     $action = $_POST['reaction'];
@@ -31,12 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Generate a unique ID for new reactions
     $reactionID = $table . date('YmdHis') . rand(1000, 9999);
 
+    try{
     // Check if the user has already reacted
     $sql = "SELECT $reactionType FROM $table WHERE userID = ? AND {$itemType}ID = ?";
     $stmt = $con->prepare($sql);
     if ($stmt === false) {
         $response['message'] = 'Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql;
-        error_log('Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql, 3, 'C:/xampp/htdocs/ServersideGroupAssignment/error.log');
         echo json_encode($response);
         exit();
     }
@@ -62,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $con->prepare($sql);
             if ($stmt === false) {
                 $response['message'] = 'Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql;
-                error_log('Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql, 3, 'C:/xampp/htdocs/ServersideGroupAssignment/error.log');
                 echo json_encode($response);
                 exit();
             }
@@ -79,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $con->prepare($sql);
             if ($stmt === false) {
                 $response['message'] = 'Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql;
-                error_log('Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql, 3, 'C:/xampp/htdocs/ServersideGroupAssignment/error.log');
                 echo json_encode($response);
                 exit();
             }
@@ -100,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $con->prepare($sql);
         if ($stmt === false) {
             $response['message'] = 'Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql;
-            error_log('Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql, 3, 'C:/xampp/htdocs/ServersideGroupAssignment/error.log');
             echo json_encode($response);
             exit();
         }
@@ -117,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $con->prepare($sql);
         if ($stmt === false) {
             $response['message'] = 'Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql;
-            error_log('Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql, 3, 'C:/xampp/htdocs/ServersideGroupAssignment/error.log');
             echo json_encode($response);
             exit();
         }
@@ -134,7 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $con->prepare($sql);
     if ($stmt === false) {
         $response['message'] = 'Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql;
-        error_log('Failed to prepare statement: ' . $con->error . ' - SQL: ' . $sql, 3, 'C:/xampp/htdocs/ServersideGroupAssignment/error.log');
         echo json_encode($response);
         exit();
     }
@@ -161,8 +165,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'replyLike' => ($itemType === 'reply') ? $countRow['replyLike'] : 0,
         'replyDislike' => ($itemType === 'reply') ? $countRow['replyDislike'] : 0
     ];
+}catch (Exception $e) {
+    $response['message'] = $e->getMessage();
+    error_log($e->getMessage(), 3, 'C:/xampp/htdocs/3243/error.log');
 }
-
+}
 echo json_encode($response);
 $con->close();
 ?>

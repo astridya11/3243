@@ -1,121 +1,7 @@
 <?php
-include("auth.php");
-require('database.php');
-
-$status = "";
-
-
-// Manually create movie
-if (isset($_POST['manual']) && $_POST['new'] == 1) {
-    $movieID = 'movie' . date('YmdHis');
-    $title = $_REQUEST['title'];
-    $dateReleased = $_REQUEST['dateReleased'];
-    $duration = $_REQUEST['duration'];
-    $genre = $_REQUEST['genre'];
-    $language = $_REQUEST['language'];
-    $country = $_REQUEST['country'];
-    $director = $_REQUEST['director'];
-    $cast = $_REQUEST['cast'];
-    $synopsis = $_REQUEST['synopsis'];
-    $imageURL = $_REQUEST["imageURL"];
-    $videoURL_1 = $_REQUEST["videoURL_1"];
-    $videoURL_2 = $_REQUEST["videoURL_2"];
-    $videoURL_3 = $_REQUEST["videoURL_3"];
-    $videoURL_4 = $_REQUEST["videoURL_4"];
-    $videoURL_5 = $_REQUEST["videoURL_5"];
-    $videoURL_6 = $_REQUEST["videoURL_6"];
-    $videoURL_7 = $_REQUEST["videoURL_7"];
-    $videoURL_8 = $_REQUEST["videoURL_8"];
-    $videoURL_9 = $_REQUEST["videoURL_9"];
-    $videoURL_10 = $_REQUEST["videoURL_10"];
-    $submittedby = $_SESSION["userID"] ?? 0;
-
-    //check whether title already exists
-    $check_query = "SELECT * FROM movies;";
-    $result = mysqli_query($con, $check_query);
-
-    while ($row = mysqli_fetch_assoc($result)) {
-        if ($row["title"] === $title && $row["dateReleased"] === $dateReleased) {
-            $status = "<span style='color: red;'>Movie already exists. Please enter a different movie.";
-        } else {
-            $ins_query = "INSERT into movies
-            (movieID, title, dateReleased, duration, genre, `language`, country, director, cast, synopsis, imageURL, videoURL_1, videoURL_2, videoURL_3, videoURL_4, videoURL_5, videoURL_6, videoURL_7, videoURL_8, videoURL_9, videoURL_10, submittedBy)values
-            ('$movieID', '$title','$dateReleased','$duration','$genre','$language', '$country', '$director', '$cast', '$synopsis', '$imageURL', '$videoURL_1', '$videoURL_2', '$videoURL_3', '$videoURL_4', '$videoURL_5', '$videoURL_6', '$videoURL_7', '$videoURL_8', '$videoURL_9', '$videoURL_10', '$submittedby')";
-
-            mysqli_query($con, $ins_query)
-                or die(mysqli_error($con));
-
-            $status = "New Movie Inserted Successfully.
-            <br><br><a href='view_movies.php'>View Movie Record</a>";
-        }
-    }
-}
-
-// Call API to create batches of movies
-else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
-
-    sleep(2);
-
-    $data = $_POST['data'];
-    function object_to_array($data)
-    {
-        return (array) $data;
-    }
-    $movie = object_to_array($data);
-
-
-    if (is_array($movie)) {
-        $movieID = 'movie' . date('YmdHis');
-        $title = $movie['title'];
-        $dateReleased = $movie['dateReleased'];
-        $duration = $movie['duration'];
-        $genre = $movie['genre'];
-        $language = $movie['language'];
-        $country = $movie['country'];
-        $director = $movie['director'];
-        $cast = $movie['cast'];
-        $synopsis = $movie['synopsis'];
-        $imageURL = $movie['imageURL'];
-        $videoURL_1 = $movie["videoURL_1"];
-        $videoURL_2 = $movie["videoURL_2"];
-        $videoURL_3 = $movie["videoURL_3"];
-        $videoURL_4 = $movie["videoURL_4"];
-        $videoURL_5 = $movie["videoURL_5"];
-        $videoURL_6 = $movie["videoURL_6"];
-        $videoURL_7 = $movie["videoURL_7"];
-        $videoURL_8 = $movie["videoURL_8"];
-        $videoURL_9 = $movie["videoURL_9"];
-        $videoURL_10 = $movie["videoURL_10"];
-        $submittedby = $_SESSION["userID"] ?? 0;
-
-        // Check if movie with the same title already exists
-        $check_query = "SELECT * FROM movies WHERE title = '$title'";
-        $result = mysqli_query($con, $check_query);
-
-        if (mysqli_num_rows($result) > 0) {
-            $status = "Movie with this title already exists.";
-        } else {
-            // Insert new movie record
-            $ins_query = "INSERT into movies
-            (movieID, title, dateReleased, duration, genre, `language`, country, director, cast, synopsis, imageURL, videoURL_1, videoURL_2, videoURL_3, videoURL_4, videoURL_5, videoURL_6, videoURL_7, videoURL_8, videoURL_9, videoURL_10, submittedBy)values
-            ('$movieID', '$title','$dateReleased','$duration','$genre','$language', '$country', '$director', '$cast', '$synopsis', '$imageURL', '$videoURL_1', '$videoURL_2', '$videoURL_3', '$videoURL_4', '$videoURL_5', '$videoURL_6', '$videoURL_7', '$videoURL_8', '$videoURL_9', '$videoURL_10', '$submittedby')";
-
-            if (mysqli_query($con, $ins_query)) {
-                echo '<script>
-                alert("API success. Movies are added to the database.");
-                window.location.href = "create_movies.php";
-                </script>';
-            } else {
-                die(mysqli_error($con));
-            }
-        }
-    } else {
-        $status = "Invalid movie data.";
-    }
-}
+require_once('../config.php');
+require(CONTROLLER_PATH . "create_movies_controller.php");
 ?>
-
-
 <!DOCTYPE html>
 <html>
 
@@ -128,7 +14,7 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
     <script src="callAPI.js"></script>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
-         
+
         body {
             background: linear-gradient(to right, rgba(34, 31, 31, 1) 0%, rgba(34, 31, 31, 0.4) 100%);
             margin: -10px -4px 0;
@@ -191,6 +77,7 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
             padding: 10px 0px;
             background-color: rgb(240, 240, 240);
         }
+
 
         input[type="text"],
         input[type="date"],
@@ -290,11 +177,9 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
             text-align: center;
             border-radius: 50%;
             margin: 4px 12px;
-            cursor: pointer;
         }
 
         button {
-            width: 20%;
             background: #f2b70485;
             border: none;
             outline: none;
@@ -334,7 +219,6 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
             display: none;
         }
 
-
         @media only screen and (max-width: 768px) {
             header nav ul {
                 position: absolute;
@@ -370,18 +254,39 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
             .subscribe {
                 display: none;
             }
-
         }
+
+        /* #loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid rgba(89, 59, 0, 100);
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        } */
     </style>
 </head>
 
 <body>
-<header>
+    <header>
         <div class="container">
             <div class="navbar flex1">
                 <nav>
                     <ul id="menuitem">
-                        <li><a href="movies_dashboard.php">Movies Dashboard </a></li>
+                        <li><a href="../view/movies_dashboard.php">Movies Dashboard </a></li>
                     </ul>
                 </nav>
                 <span class="fa fa-bars" onclick="menutoggle()"></span>
@@ -393,8 +298,8 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
         </div>
     </header>
     <h1 style="color:white; margin-left: 12px;">Insert New Movies</h1>
-    <form name="insert_movie" style="margin-bottom: 0px;" method="post" action="">
-        <input type="hidden" name="new" value="1" />
+
+    <form name="insert_form" style="margin-bottom: 0px;" method="post" action="../controller/create_movies_controller.php">
         <div class="form-container">
             <div>
                 <label for="title">Movie Title</label>
@@ -476,17 +381,20 @@ else if (isset($_POST['callAPI']) && $_POST['new'] == 1) {
                 <label for="videoURL_10">Trailer 10 (optional)</label>
                 <input type="text" id="videoURL_10" name="videoURL_10" placeholder="Enter Movie Trailer 10" autocapitalize="none" />
             </div>
+            <!-- <div id="loader" style="display: none;"></div> -->
+            <p class="status"><?php echo $status; ?></p>
         </div>
         <div class="button-container">
-            <input name="manual" type="submit" value="Submit" />
+            <input id="manual" name="manual" type="submit" value="Submit" />
             <input name="callAPI" type="submit" value="Call API" id="callAPIButton" />
         </div>
+
     </form>
-    <p class="status"><?php echo $status; ?></p>
     <script>
         document.getElementById("playbtn").onclick = function() {
-            window.location.href = "profile.php";
+            window.location.href = "../view/profile.php";
         };
+        // document.getElementById("loader").style.display = "none";
     </script>
 </body>
 
