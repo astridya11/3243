@@ -31,8 +31,10 @@
       // die() is used to throw exception
       if($_SESSION['userRole'] == "admin"){
         header("Location: view/insert_movies.php");
+        exit();
       }else if($_SESSION['userRole'] == 'user'){
-        header("Location: view/profile.php");
+        header("Location: view/movies_dashboard.php");
+        exit();
       }else{
         echo("Invalid user");
       }

@@ -204,19 +204,6 @@ function updatebackgroundpic($targetDirectory, $file, $currentuserID)
     }
 }
 
-// display alert message
-// if (isset($profilepicstatus) && isset($backgroundpicstatus))
-// {
-//     echo "<script>alert('$profilepicstatus $backgroundpicstatus');</script>";
-// }
-// else if (isset($profilepicstatus))
-// {
-//     echo "<script>alert('$profilepicstatus');</script>";
-// }
-// else if (isset($backgroundpicstatus))
-// {
-//     echo "<script>alert('$backgroundpicstatus');</script>";
-// }
 if (isset($_GET['fileuploadstatus'])) {
     $statusMessage = htmlspecialchars($_GET['fileuploadstatus'], ENT_QUOTES, 'UTF-8');
     echo "<script>alert('$statusMessage');</script>";
