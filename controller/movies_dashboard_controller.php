@@ -1,5 +1,4 @@
 <?php
-include("auth.php");
 require(MODEL_PATH . 'movies_model.php');
 
 $moviesModel = new MoviesModel("localhost", "root", "", "3243"); 

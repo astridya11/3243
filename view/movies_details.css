@@ -65,6 +65,7 @@ i {
 header {
     height: 10vh;
     background: linear-gradient(to right, #f2b704 0%, rgba(34, 31, 31, 0.4) 100%);
+    padding-left: 16px;
 }
 
 header .navbar {
@@ -269,7 +270,7 @@ h1 {
 }
 
 .home_content{
-    padding-left: 8px;
+    padding-left: 16px;
 }
 
 .home_content p {
